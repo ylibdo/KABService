@@ -1,62 +1,35 @@
 ﻿using KABService.Business_Logic;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using OfficeOpenXml;
 using System;
 using System.Collections.Generic;
-using System.Data;
-using System.IO;
 using System.Text;
 
 namespace KABService.Helper
 {
-    class ExcelHelper
+    class CSVHelper
     {
         private readonly ILogger<Worker> _logger;
         private readonly IConfiguration _configuration;
 
-        public ExcelHelper(ILogger<Worker> logger, IConfiguration configuration)
+        public CSVHelper(ILogger<Worker> logger, IConfiguration configuration)
         {
             _logger = logger;
             _configuration = configuration;
         }
 
-        //Prepare to read data from Excel.
-        public ExcelWorksheet Prepare(string _fileName)
-        {
-            FileInfo file = new FileInfo(_fileName);
-            if(file.Extension != ".xlsx")
-            {
-                throw new Exception("File has to be new excel file end in .xlsx");
-            }
-            try
-            {
-                ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
-                using (ExcelPackage package = new ExcelPackage(file))
-                {
-                    ExcelWorksheet worksheet = package.Workbook.Worksheets[1];
-                    return worksheet;
-                }
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex.Message);
-                return null;
-            }
-        }
-
         // Data tranformation for new output
-        public string Process(ExcelWorksheet _worksheet, string _workingDirectory)
+        public string Process(string _workingDirectory, string _fileName)
         {
             var fileName = string.Empty;
-            var company = this.getCompanyByDirectoryName(_workingDirectory);
+            var company = this.getCompanyByFileName(_fileName);
             switch (company)
             {
                 case "ISTA":
                     // Insert business logic
                     ISTA ista = new ISTA(_logger);
-                    fileName = ista.ProcessExcel(_worksheet, company, _workingDirectory);
-                        break;
+                    fileName = ista.ProcessCSV(company, _workingDirectory, _fileName);
+                    break;
                 case "Company2":
                     // Insert business logic
                     break;
@@ -71,7 +44,7 @@ namespace KABService.Helper
             return fileName;
         }
 
-        private string getCompanyByDirectoryName(string _workingDirectory)
+        private string getCompanyByFileName(string _fileName)
         {
             string company = string.Empty;
             var companyString = _configuration.GetValue<string>("Company");
@@ -80,7 +53,7 @@ namespace KABService.Helper
                 var companyArray = companyString.Split(";");
                 foreach (string c in companyArray)
                 {
-                    if(_workingDirectory.IndexOf(c) > 0)
+                    if (_fileName.IndexOf(c) > 0)
                     {
                         company = c;
                         break;

@@ -17,10 +17,10 @@ namespace KABService.Business_Logic
         }
 
         // Process data and return newly created file name.
-        public string Process(ExcelWorksheet _Worksheet, string _company, string _workingDirectory)
+        public string ProcessExcel(ExcelWorksheet _Worksheet, string _company, string _workingDirectory)
         {
             // make a new excel to hold export data
-            string newFileName = string.Concat(_company, "_", DateTime.Now.ToString("yyyyMMddHHmmss"), "_unik");
+            string newFileName = string.Concat(_company, "_", DateTime.Now.ToString("yyyyMMddHHmmss"), "_unik.xlsx");
             FileInfo newFile = new FileInfo(Path.Combine(_workingDirectory,newFileName));
             try
             {
@@ -39,6 +39,25 @@ namespace KABService.Business_Logic
                     }
                     package.Save();
                 }
+                return newFile.FullName;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return string.Empty;
+            }
+        }
+
+        // Process data and return newly created file name.
+        public string ProcessCSV(string _company, string _workingDirectory, string _fileName)
+        {
+            // make a new excel to hold export data
+            string newFileName = string.Concat(_company, "_", DateTime.Now.ToString("yyyyMMddHHmmss"), "_unik.csv");
+            FileInfo newFile = new FileInfo(Path.Combine(_workingDirectory, newFileName));
+            try
+            {
+                // process csv
+
                 return newFile.FullName;
             }
             catch (Exception ex)

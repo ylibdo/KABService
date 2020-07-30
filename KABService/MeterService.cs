@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.IO;
-using System.Text;
-using KABService.Helper;
+﻿using KABService.Helper;
 using KABService.Object;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using OfficeOpenXml;
-using OfficeOpenXml.ConditionalFormatting;
+using System;
+using System.Collections.Generic;
+using System.IO;
 
 namespace KABService
 {
@@ -41,12 +38,31 @@ namespace KABService
                         {
                             try
                             {
-                                // step 2.2 Prepare work sheet to read File
-                                ExcelHelper excelHelper = new ExcelHelper(_logger, _configuration);
-                                ExcelWorksheet excelWorksheet = excelHelper.Prepare(file);
+                                FileInfo fileInfo = new FileInfo(file);
+                                string newFileName = string.Empty;
 
-                                // step 3. Data transformation and get output
-                                var newFileName = excelHelper.Process(excelWorksheet, directory);
+                                if (fileInfo.Extension == ".csv")
+                                {
+                                    // handling CSV files
+                                    CSVHelper csvHelper = new CSVHelper(_logger, _configuration);
+                                    newFileName = csvHelper.Process(directory, file);
+                                }
+                                else if (fileInfo.Extension == ".xlsx")
+                                {
+                                    // handling Excel files
+
+                                    // step 2.2 Prepare work sheet to read File
+                                    ExcelHelper excelHelper = new ExcelHelper(_logger, _configuration);
+                                    ExcelWorksheet excelWorksheet = excelHelper.Prepare(file);
+
+                                    // step 3. Data transformation and get output
+                                    newFileName = excelHelper.Process(excelWorksheet, directory);
+                                }
+                                else
+                                {
+                                    throw new FileLoadException("File format is not supported");
+                                }
+                                
                                 if(String.IsNullOrEmpty(newFileName))
                                 {
                                     throw new NullReferenceException();
