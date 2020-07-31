@@ -1,4 +1,45 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
 }
+@using System.IO;
+@model List<KABWeb.Models.KABDirectory>
 
+<table class="table table-responsive table-sm table-hover">    
+    <tbody>
+        @{
+            foreach (KABDirectory m in Model)
+            {
+                <tr>
+                    <td>@m.Name</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                @*foreach (DirectoryInfo di in m.SubDirectoryList)
+                {
+                    <tr>
+                        <td></td>
+                        <td>@di.Name</td>
+                        <td></td>
+                    </tr>
+                    var subFiles = di.GetFiles();
+                    foreach (FileInfo fi in subFiles)
+                    {
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td>@fi.Name</td>
+                        </tr>
+                    }
+                }*@
+                foreach (FileInfo fi in m.FileList)
+                {
+                    <tr class="bg-light">
+                        <td><span class="badge badge-success">New</span></td>
+                        <td>@fi.Name</td>
+                        <td></td>
+                    </tr>
+                }
+            }
+        }
+    </tbody>
+</table>

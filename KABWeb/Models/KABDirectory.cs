@@ -10,7 +10,7 @@ namespace KABWeb.Models
     {
         public int SearchDepth { get; set; }
         public string Name { get; set; }
-        public IEnumerable<KABDirectory> SubDirectoryList { get; set; }
+        public IEnumerable<DirectoryInfo> SubDirectoryList { get; set; }
         public IEnumerable<FileInfo> FileList { get; set; }
     }
 }
