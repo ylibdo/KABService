@@ -57,7 +57,7 @@ namespace KABService.Helper
         {
             try
             {
-                var targetPath = Path.Combine(_workingDirectory + _fileMoveOption.ToString());
+                var targetPath = Path.Combine(_workingDirectory, _fileMoveOption.ToString());
                 
                 Directory.Move(_fileName, Path.Combine(targetPath, _fileName.Substring(_workingDirectory.Length + 1)));
 
