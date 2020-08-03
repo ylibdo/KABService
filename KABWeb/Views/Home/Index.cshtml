@@ -10,7 +10,7 @@
             foreach (KABDirectory m in Model)
             {
                 <tr>
-                    <td>@m.Name</td>
+                    <td class="font-weight-bold">@m.Name</td>
                     <td></td>
                     <td></td>
                 </tr>
@@ -36,7 +36,7 @@
                     <tr class="bg-light">
                         <td><span class="badge badge-success">New</span></td>
                         <td>@fi.Name</td>
-                        <td></td>
+                        <td><a class="btn btn-sm btn-dark" asp-action="Detail" asp-route-id="@fi.FullName">View Content</a></td>
                     </tr>
                 }
             }

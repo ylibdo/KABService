@@ -43,6 +43,28 @@ namespace KABWeb.Controllers
             return View(models);
         }
 
+        public IActionResult Detail(string id)
+        {
+            try
+            {
+
+                FileInfo fileInfo = new FileInfo(id);
+                if (!fileInfo.Exists)
+                {
+                    return View();
+                }
+                else
+                {
+                    var message = String.Concat("File: ", fileInfo.FullName, " does no longer exist");
+                    return View("Error", new ErrorViewModel() { Message = message });
+                }
+            }
+            catch(Exception ex)
+            {
+                return View("Error", new ErrorViewModel() { Message = ex.Message });
+            }
+            
+        }
         public IActionResult Privacy()
         {
             return View();
