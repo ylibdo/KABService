@@ -9,6 +9,7 @@ using KABWeb.Models;
 using KABWeb.Helpers;
 using Microsoft.Extensions.Configuration;
 using System.IO;
+using KABWeb.Helper;
 
 namespace KABWeb.Controllers
 {
@@ -49,9 +50,28 @@ namespace KABWeb.Controllers
             {
 
                 FileInfo fileInfo = new FileInfo(id);
-                if (!fileInfo.Exists)
+                if (fileInfo.Exists)
                 {
-                    return View();
+                    if (fileInfo.Extension == ".csv")
+                    {
+                        // handling CSV files
+                        CSVHelper csvHelper = new CSVHelper(_logger, _configuration);
+                        IEnumerable<CommonViewModel> model = csvHelper.Load(fileInfo.FullName);
+                        return View(model);
+                    }
+                    else if (fileInfo.Extension == ".xlsx")
+                    {
+                        // handling Excel files
+
+                        // step 2.2 Prepare work sheet to read File
+                        ExcelHelper excelHelper = new ExcelHelper(_logger, _configuration);
+                        IEnumerable<CommonViewModel> model = excelHelper.Load(fileInfo.FullName);
+                        return View(model);
+                    }
+                    else
+                    {
+                        return View("Error", new ErrorViewModel() { Message = "File format is not supported." });
+                    }
                 }
                 else
                 {

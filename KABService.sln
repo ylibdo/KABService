@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.30225.117
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KABService", "KABService\KABService.csproj", "{B6624647-BD28-41D4-A68F-6CAC5387127D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KABWeb", "KABWeb\KABWeb.csproj", "{90665D15-D05C-41C8-A73B-08BBC5046ADB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KABWeb", "KABWeb\KABWeb.csproj", "{90665D15-D05C-41C8-A73B-08BBC5046ADB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
