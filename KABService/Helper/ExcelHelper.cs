@@ -34,7 +34,8 @@ namespace KABService.Helper
                 ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
                 using (ExcelPackage package = new ExcelPackage(file))
                 {
-                    ExcelWorksheet worksheet = package.Workbook.Worksheets[1];
+                    Console.WriteLine(package.Workbook.Worksheets.Count);
+                    ExcelWorksheet worksheet = package.Workbook.Worksheets[0];
                     return worksheet;
                 }
             }
@@ -57,9 +58,11 @@ namespace KABService.Helper
                     ISTA ista = new ISTA(_logger);
                     fileName = ista.ProcessExcel(_worksheet, company, _workingDirectory);
                         break;
-                case "Company2":
+                case "1008 Casi":
                     // Insert business logic
-                    break;
+                    Casi casi = new Casi(_logger);
+                    fileName = casi.ProcessExcel(_worksheet, company, _workingDirectory);
+                        break;
                 case "Company3":
                     // Insert business logic
                     break;

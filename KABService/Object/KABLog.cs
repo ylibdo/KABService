@@ -8,7 +8,7 @@ namespace KABService.Object
     class KABLog
     {
         public LogLevel LogLevel { get; set; }
-        public string Message { get; set; }
+        public string Log { get; set; }
         public DateTime CreatedDateTime { get; set; }
     }
 }

@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using KABService.Helper;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -25,8 +27,20 @@ namespace KABService
             while (!stoppingToken.IsCancellationRequested)
             {
                 _logger.LogInformation("Meter service is running at: {time}", DateTimeOffset.Now);
-                MeterService meterService = new MeterService(_logger, _configuration);
-                meterService.Run();
+                //MeterService meterService = new MeterService(_logger, _configuration);
+                //meterService.Run();
+                
+                ExcelTest excelTest = new ExcelTest(_logger, _configuration);
+
+                //excelTest.ImportExceltoDatatable("E:\\KAB Services\\MeterService\\1008 Casi\\KAB-AKB_Afd-_10-08_Karr_8 311219 visninger.xlsx");
+
+                //excelTest.ImportExceltoDatatable("E:\\KAB Services\\MeterService\\4201 Brunata\\Payroll.csv");
+
+
+                excelTest.ProcessExcelFile("E:\\KAB Services\\MeterService\\1902 Ista\\740325_2020-02-14 134418_KAB_2019-12-31_Version_200.csv", "E:\\KAB Services\\MeterService\\1902 Ista");
+                
+                //ExcelHelper excelHelper = new ExcelHelper(_logger,_configuration);
+                //excelHelper.Process(excelHelper.Prepare(@"E:\KAB Services\MeterService\1008 Casi\KAB - AKB_Afd - _10 - 08_Karr_8 311219 visninger.xlsx"), @"E:\KAB Services\MeterService\1008 Casi");
                 await Task.Delay(10000, stoppingToken);
             }
         }
