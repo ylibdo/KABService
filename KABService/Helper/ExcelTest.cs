@@ -49,30 +49,34 @@ namespace KABService.Helper
 
             Match department = Regex.Match(_company, regexPattern);
 
+            string strDepartment = department.Value.ToString();
+
             Console.WriteLine(department.Value);
 
             ExcelWorksheet worksheet = package.Workbook.Worksheets.Add(department + " AC");
 
             //Insert headers
             worksheet.Cells[1, 1].Value = ConfigVariables.Company;
-            worksheet.Cells[1, 2].Value = "Afdeling";
-            worksheet.Cells[1, 3].Value = "Lejlighed";
-            worksheet.Cells[1, 4].Value = "Målertype";
-            worksheet.Cells[1, 5].Value = "Serienr";
-            worksheet.Cells[1, 6].Value = "Aflæsningsdato";
-            worksheet.Cells[1, 7].Value = "Aflæsning";
-            worksheet.Cells[1, 8].Value = "Faktor";
-            worksheet.Cells[1, 9].Value = "Reduktion";
-            worksheet.Cells[1, 10].Value = "Lokale";
-            worksheet.Cells[1, 11].Value = "Installation";
-            worksheet.Cells[1, 12].Value = "Deaktiveringsdato";
-            worksheet.Cells[1, 13].Value = "Bemærkning";
-            worksheet.Cells[1, 14].Value = "Nulstillingsmåler";
+            worksheet.Cells[1, 2].Value = ConfigVariables.Department;
+            worksheet.Cells[1, 3].Value = ConfigVariables.Apartment;
+            worksheet.Cells[1, 4].Value = ConfigVariables.MeterType;
+            worksheet.Cells[1, 5].Value = ConfigVariables.SerieID;
+            worksheet.Cells[1, 6].Value = ConfigVariables.ReadingDate;
+            worksheet.Cells[1, 7].Value = ConfigVariables.Reading;
+            worksheet.Cells[1, 8].Value = ConfigVariables.Factor;
+            worksheet.Cells[1, 9].Value = ConfigVariables.Reduction;
+            worksheet.Cells[1, 10].Value = ConfigVariables.Room;
+            worksheet.Cells[1, 11].Value = ConfigVariables.Installation;
+            worksheet.Cells[1, 12].Value = ConfigVariables.DeactivationDate;
+            worksheet.Cells[1, 13].Value = ConfigVariables.Comment;
+            worksheet.Cells[1, 14].Value = ConfigVariables.ResetMeter;
 
             
             DataTable dt = ImportExceltoDatatable(path);
 
             Console.WriteLine("dt rows count: " + dt.Rows.Count);
+
+
 
             //BusinessLogic
 
@@ -116,7 +120,6 @@ namespace KABService.Helper
                     reductionColumn = 10;
                     roomColumn = 11;
                     installationDateColumn = 12;
-                    factor = 0.123;
                     maalerType = "Doprimo 3 SoC";
                     notContainingValues = dt.AsEnumerable().Where(x => x[readDateColumn].Equals(searchCriteria) && x[maalerColumn].ToString().Contains(maalerType)).ToList();
                     break;
@@ -156,17 +159,17 @@ namespace KABService.Helper
             {
                 object[] rowArray = row.ItemArray;
                 OutputModelCSV model = new OutputModelCSV();
-                model.Selskab = (string)rowArray[0];
-                model.Afdeling = (string)rowArray[1];
-                model.Lejlighed = (string)rowArray[2];
-                model.Målertype = (string)rowArray[4];
-                model.Serienr = (string)rowArray[5];
-                model.Aflæsningsdato = (string)rowArray[7];
-                model.Aflæsning = (string)rowArray[8];
-                model.Faktor = (string)rowArray[9];
-                model.Reduktion = (string)rowArray[10];
-                model.Lokale = (string)rowArray[11];
-                model.Installationsdato = (string)rowArray[12];
+                model.Selskab = (string)rowArray[companyColumn];
+                model.Afdeling = (string)rowArray[departmentColumn];
+                model.Lejlighed = (string)rowArray[apartmentColumn];
+                model.Målertype = (string)rowArray[maalerColumn];
+                model.Serienr = (string)rowArray[serieIDColumn];
+                model.Aflæsningsdato = (string)rowArray[readDateColumn];
+                model.Aflæsning = (string)rowArray[readColumn];
+                model.Faktor = (string)rowArray[faktorColumn];
+                model.Reduktion = (string)rowArray[reductionColumn];
+                model.Lokale = (string)rowArray[roomColumn];
+                model.Installationsdato = (string)rowArray[installationDateColumn];
                 model.Deaktiveringsdato = "";
                 model.Bemærkninger = "";
                 model.Nulstillingsmåler = "";

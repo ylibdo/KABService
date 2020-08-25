@@ -10,19 +10,20 @@ namespace KABService.Object
 
         //Insert headers
         public const string Company = "Selskab";
-          /*  worksheet.Cells[1, 2].Value = "Afdeling";
-            worksheet.Cells[1, 3].Value = "Lejlighed";
-            worksheet.Cells[1, 4].Value = "Målertype";
-            worksheet.Cells[1, 5].Value = "Serienr";
-            worksheet.Cells[1, 6].Value = "Aflæsningsdato";
-            worksheet.Cells[1, 7].Value = "Aflæsning";
-            worksheet.Cells[1, 8].Value = "Faktor";
-            worksheet.Cells[1, 9].Value = "Reduktion";
-            worksheet.Cells[1, 10].Value = "Lokale";
-            worksheet.Cells[1, 11].Value = "Installation";
-            worksheet.Cells[1, 12].Value = "Deaktiveringsdato";
-            worksheet.Cells[1, 13].Value = "Bemærkning";
-            worksheet.Cells[1, 14].Value = "Nulstillingsmåler";*/
+        public const string Department = "Afdeling";
+        public const string Apartment = "Lejlighed";
+        public const string MeterType = "Målertype";
+        public const string SerieID = "Serienr";
+        public const string ReadingDate = "Aflæsningsdato";
+        public const string Reading = "Aflæsning";
+        public const string Factor = "Faktor";
+        public const string Reduction = "Reduktion";
+        public const string Room = "Lokale";
+        public const string Installation = "Installation";
+        public const string DeactivationDate = "Deaktiveringsdato";
+        public const string Comment = "Bemærkning";
+        public const string ResetMeter = "Nulstillingsmåler";
+
 
     }
 }

@@ -37,7 +37,7 @@ namespace KABService
                 //excelTest.ImportExceltoDatatable("E:\\KAB Services\\MeterService\\4201 Brunata\\Payroll.csv");
 
 
-                excelTest.ProcessExcelFile("E:\\KAB Services\\MeterService\\1902 Ista\\740325_2020-02-14 134418_KAB_2019-12-31_Version_200.csv", "E:\\KAB Services\\MeterService\\1902 Ista");
+                excelTest.ProcessExcelFile("E:\\KAB Services\\MeterService\\1008 Casi\\KAB-AKB_Afd-_10-08_Karr_8 311219 visninger.xlsx", "E:\\KAB Services\\MeterService\\1008 Casi");
                 
                 //ExcelHelper excelHelper = new ExcelHelper(_logger,_configuration);
                 //excelHelper.Process(excelHelper.Prepare(@"E:\KAB Services\MeterService\1008 Casi\KAB - AKB_Afd - _10 - 08_Karr_8 311219 visninger.xlsx"), @"E:\KAB Services\MeterService\1008 Casi");
