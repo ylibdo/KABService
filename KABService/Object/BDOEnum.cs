@@ -8,6 +8,6 @@ namespace KABService.Object
     {
         public enum FileMoveOption { Processed, Archive, Error}
 
-        public enum LogLevel { Info, Warning, Error }
+        public enum LogLevel { Info, Warning, Error } 
     }
 }
