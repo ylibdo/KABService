@@ -1,8 +1,15 @@
-﻿using KABService.Business_Logic;
+﻿using CsvHelper;
+using KABService.Models;
+using KABService.Object;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Globalization;
+using System.IO;
+using System.Linq;
 using System.Text;
 
 namespace KABService.Helper
@@ -19,53 +26,84 @@ namespace KABService.Helper
         }
 
         // Data tranformation for new output
-        public string Process(string _workingDirectory, string _fileName)
+        public DataTable ReadDataAsDataTable(string _fileName)
         {
-            var fileName = string.Empty;
-            var company = this.getCompanyByFileName(_fileName);
-            switch (company)
+            FileInfo fileInfo = new FileInfo(_fileName);
+
+            using var reader = new StreamReader(fileInfo.FullName, Encoding.GetEncoding("iso-8859-1"));
+            using var csv = new CsvReader(reader, CultureInfo.CurrentCulture);
+            csv.Configuration.HasHeaderRecord = false;
+            csv.Configuration.MissingFieldFound = null;
+            csv.Configuration.Delimiter = ";";
+
+            List<InputModelCSV> records = new List<InputModelCSV>();
+
+            records = csv.GetRecords<InputModelCSV>().ToList();
+
+            PropertyDescriptorCollection properties = TypeDescriptor.GetProperties(typeof(InputModelCSV));
+            DataTable table = new DataTable();
+            foreach (PropertyDescriptor prop in properties)
             {
-                case "ISTA":
-                    // Insert business logic
-                    ISTA ista = new ISTA(_logger);
-                    fileName = ista.ProcessCSV(company, _workingDirectory, _fileName);
-                    break;
-                case "Company2":
-                    // Insert business logic
-                    break;
-                case "Company3":
-                    // Insert business logic
-                    break;
-                default:
-                    _logger.LogWarning("Unknow company/vendor name is found.");
-                    break;
+                table.Columns.Add(prop.Name, Nullable.GetUnderlyingType(prop.PropertyType) ?? prop.PropertyType);
             }
 
-            return fileName;
+            foreach (InputModelCSV item in records)
+            {
+                DataRow row = table.NewRow();
+                foreach (PropertyDescriptor prop in properties)
+                {
+                    row[prop.Name] = prop.GetValue(item) ?? DBNull.Value;
+                }
+
+                table.Rows.Add(row);
+            }
+
+            return table;
         }
 
-        private string getCompanyByFileName(string _fileName)
+        public string SaveDataToFile(IEnumerable<DataRow> _input, string _company, string _workingDirectory)
         {
-            string company = string.Empty;
-            var companyString = _configuration.GetValue<string>("Company");
             try
             {
-                var companyArray = companyString.Split(";");
-                foreach (string c in companyArray)
+                string newCSVFileName = string.Concat(_company, ConfigVariables.OutputFileSeparator, DateTime.Now.ToString(ConfigVariables.OutputFileDateFormatString), ConfigVariables.OutputFileSuffixCSV);
+                FileInfo newCSVFile = new FileInfo(Path.Combine(_workingDirectory, newCSVFileName));
+                List<OutputModelCSV> output = new List<OutputModelCSV>();
+                foreach (DataRow row in _input)
                 {
-                    if (_fileName.IndexOf(c) > 0)
+                    object[] rowArray = row.ItemArray;
+                    OutputModelCSV model = new OutputModelCSV
                     {
-                        company = c;
-                        break;
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex.Message);
-            }
+                        Selskab = (string)rowArray[0],
+                        Afdeling = (string)rowArray[1],
+                        Lejlighed = (string)rowArray[2],
+                        Målertype = (string)rowArray[4],
+                        Serienr = (string)rowArray[5],
+                        Aflæsningsdato = (string)rowArray[7],
+                        Aflæsning = (string)rowArray[8],
+                        Faktor = (string)rowArray[9],
+                        Reduktion = (string)rowArray[10],
+                        Lokale = (string)rowArray[11],
+                        Installationsdato = (string)rowArray[12],
+                        Deaktiveringsdato = "",
+                        Bemærkninger = "",
+                        Nulstillingsmåler = ""
+                    };
 
-            return company;
+                    output.Add(model);
+                }
+
+                var fStream = new FileStream(newCSVFile.FullName, FileMode.Create);
+                using var writer = new StreamWriter(fStream, Encoding.GetEncoding("ISO-8859-1"));
+                using var csv = new CsvWriter(writer, CultureInfo.InvariantCulture);
+                csv.Configuration.Delimiter = ";";
+                csv.WriteRecords(output);
+                csv.Flush();
+                return newCSVFile.FullName;
+            }
+            catch(Exception)
+            {
+                return string.Empty;
+            }
         }
     }
 }
