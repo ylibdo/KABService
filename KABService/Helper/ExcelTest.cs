@@ -37,7 +37,9 @@ namespace KABService.Helper
             string _company = getCompanyByDirectoryName(_workingDirectory);
 
             string newFileName = string.Concat(_company, "_", DateTime.Now.ToString("yyyyMMddHHmmss"), "_unik.xlsx");
+            string newCSVFileName = string.Concat(_company, "_", DateTime.Now.ToString("yyyyMMddHHmmss"), "_unik.csv");
             FileInfo newFile = new FileInfo(Path.Combine(_workingDirectory, newFileName));
+            FileInfo newCSVFile = new FileInfo(Path.Combine(_workingDirectory, newCSVFileName));
 
             ExcelPackage.LicenseContext = OfficeOpenXml.LicenseContext.NonCommercial;
 
@@ -74,20 +76,19 @@ namespace KABService.Helper
 
             //BusinessLogic
 
+            int companyColumn = 0;
+            int departmentColumn = 0;
+            int apartmentColumn = 0;
+            int maalerColumn = 0;
             int serieIDColumn = 0;
             int readDateColumn = 0;
             int readColumn = 0;
             int faktorColumn = 0;
-            int maalerColumn = 0;
-            int apartmentColumn = 0;
             int reductionColumn = 0;
             int roomColumn = 0;
             int installationDateColumn = 0;
             DateTime searchDate = new DateTime(2019, 12, 31);
             string searchCriteria = searchDate.ToString("yyyy-MM-dd");
-            /*string criteria = new DateTime(2019, 12, 31).ToString("yyyy-MM-dd");
-            DateTime dateCriteria = Convert.ToDateTime(criteria);
-            var dateTimeCriteria = DateTime.ParseExact(criteria, "yyyy-MM-dd", CultureInfo.GetCultureInfoByIetfLanguageTag("en-US"));*/
             double factor = 0;
             string maalerType = "";
             var notContainingValues = new List<DataRow>();
@@ -104,26 +105,31 @@ namespace KABService.Helper
                     break;
 
                 case "1902":
+                    companyColumn = 0;
+                    departmentColumn = 1;
+                    apartmentColumn = 2;
+                    maalerColumn = 4;
                     serieIDColumn = 5;
                     readDateColumn = 7;
                     readColumn = 8;
-                    factor = 0.123;
                     faktorColumn = 9;
-                    maalerColumn = 4;
-                    apartmentColumn = 2;
                     reductionColumn = 10;
                     roomColumn = 11;
                     installationDateColumn = 12;
+                    factor = 0.123;
                     maalerType = "Doprimo 3 SoC";
                     notContainingValues = dt.AsEnumerable().Where(x => x[readDateColumn].Equals(searchCriteria) && x[maalerColumn].ToString().Contains(maalerType)).ToList();
                     break;
 
                 case "3020":
-                    serieIDColumn = 2;
-                    readDateColumn = 4;
-                    readColumn = 5;
+                    //THERE IS 2 SHEETS WITH DATA WHICH COMBINES TO 1 OUTPUT FILE!
+                    apartmentColumn = 1;
+                    serieIDColumn = 4;
+                    readDateColumn = 0;
+                    readColumn = 3;
                     factor = 0.123;
                     maalerType = "M7R";
+                    notContainingValues = dt.AsEnumerable().Where(x => !x[readColumn].ToString().Contains("FF")).ToList();
                     break;
 
                 case "3920":
@@ -144,6 +150,30 @@ namespace KABService.Helper
                 default:
                     break;
             }
+
+            List<OutputModelCSV> output = new List<OutputModelCSV>();
+            foreach(DataRow row in notContainingValues)
+            {
+                object[] rowArray = row.ItemArray;
+                OutputModelCSV model = new OutputModelCSV();
+                model.Selskab = (string)rowArray[0];
+                model.Afdeling = (string)rowArray[1];
+                model.Lejlighed = (string)rowArray[2];
+                model.Målertype = (string)rowArray[4];
+                model.Serienr = (string)rowArray[5];
+                model.Aflæsningsdato = (string)rowArray[7];
+                model.Aflæsning = (string)rowArray[8];
+                model.Faktor = (string)rowArray[9];
+                model.Reduktion = (string)rowArray[10];
+                model.Lokale = (string)rowArray[11];
+                model.Installationsdato = (string)rowArray[12];
+                model.Deaktiveringsdato = "";
+                model.Bemærkninger = "";
+                model.Nulstillingsmåler = "";
+
+                output.Add(model);
+            }
+
 
 
             //notContainingValues = dt.AsEnumerable().Where(x => !x[readColumn].ToString().Contains("s")).ToList();
@@ -175,12 +205,22 @@ namespace KABService.Helper
             //Insert Målertype
             //worksheet.Cells[2, 4, notContainingValues.Count + 1, 4].Value = maalerType;
 
+
+            var fStream = new FileStream(newCSVFile.ToString(), FileMode.Create);
+            using (var writer = new StreamWriter(fStream, Encoding.GetEncoding("ISO-8859-1")))
+            using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
+            {
+                csv.Configuration.Delimiter = ";";
+                csv.WriteRecords(output);
+                csv.Flush();
+            }
+
             package.SaveAs(newFile);
-
-
 
             package.Dispose();
 
+            Console.WriteLine("Done!!");
+            Console.ReadLine();
         }
 
 
@@ -225,7 +265,7 @@ namespace KABService.Helper
                     dt = ReadExcelToDataTable(path, excelVersion);
                     break;
                 case ".csv":
-                    List<ViewModelCSV> records = Load(path);
+                    List<InputModelCSV> records = Load(path);
                     dt = ConvertToDatatable(records.ToList());
                     break;
                 default:
@@ -257,7 +297,7 @@ namespace KABService.Helper
             return dt;
         }
                 
-        public List<Models.ViewModelCSV> Load(string _fileName)
+        public List<Models.InputModelCSV> Load(string _fileName)
         {
             FileInfo fileInfo = new FileInfo(_fileName);
             
@@ -267,9 +307,9 @@ namespace KABService.Helper
                 csv.Configuration.MissingFieldFound = null;
                 csv.Configuration.Delimiter = ";";
 
-            List<ViewModelCSV> records = new List<ViewModelCSV>();
+            List<InputModelCSV> records = new List<InputModelCSV>();
 
-            records = csv.GetRecords<Models.ViewModelCSV>().ToList();
+            records = csv.GetRecords<Models.InputModelCSV>().ToList();
                     
             return records.ToList();
 

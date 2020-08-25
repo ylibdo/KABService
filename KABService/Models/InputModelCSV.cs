@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace KABService.Models
 {
     
-    public class ViewModelCSV
+    public class InputModelCSV
     {
         [Index(0)]
         public string Field1 { get; set; }
