@@ -6,6 +6,14 @@ namespace KABService.Object
 {
     public static class ConfigVariables
     {
+        public const string OutputFileSeparator = "_";
+        public const string OutputFileSuffixCSV = "_unik.csv";
+        public const string OutputFileSuffixExcel = "_unik.csv";
+        public const string OutputFileDateFormatString = "yyyyMMddHHmmss";
+
+
+
+
         public const string ColumnId = "";
 
         //Insert headers

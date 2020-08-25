@@ -1,20 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\pkg\\source\\repos\\KABService\\KABService\\KABService.csproj": {}
+    "C:\\Users\\yli\\source\\repos\\KABService\\KABService\\KABService.csproj": {}
   },
   "projects": {
-    "C:\\Users\\pkg\\source\\repos\\KABService\\KABService\\KABService.csproj": {
+    "C:\\Users\\yli\\source\\repos\\KABService\\KABService\\KABService.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\pkg\\source\\repos\\KABService\\KABService\\KABService.csproj",
+        "projectUniqueName": "C:\\Users\\yli\\source\\repos\\KABService\\KABService\\KABService.csproj",
         "projectName": "KABService",
-        "projectPath": "C:\\Users\\pkg\\source\\repos\\KABService\\KABService\\KABService.csproj",
-        "packagesPath": "C:\\Users\\pkg\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\pkg\\source\\repos\\KABService\\KABService\\obj\\",
+        "projectPath": "C:\\Users\\yli\\source\\repos\\KABService\\KABService\\KABService.csproj",
+        "packagesPath": "C:\\Users\\yli\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\yli\\source\\repos\\KABService\\KABService\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\dotnet\\sdk\\NuGetFallbackFolder"
+        ],
         "configFilePaths": [
-          "C:\\Users\\pkg\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\yli\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -70,7 +73,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.401\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files (x86)\\dotnet\\sdk\\3.1.301\\RuntimeIdentifierGraph.json"
         }
       }
     }
