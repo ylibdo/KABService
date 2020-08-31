@@ -61,11 +61,11 @@ namespace KABService.Helper
             return table;
         }
 
-        public string SaveDataToFile(IEnumerable<DataRow> _input, string _company, string _workingDirectory)
+        public string SaveDataToFile(IEnumerable<DataRow> _input, FactorModel _factorModel, string _company, string _workingDirectory, string _outputSuffix)
         {
             try
             {
-                string newCSVFileName = string.Concat(_company, ConfigVariables.OutputFileSeparator, DateTime.Now.ToString(ConfigVariables.OutputFileDateFormatString), ConfigVariables.OutputFileSuffixCSV);
+                string newCSVFileName = string.Concat(_company, ConfigVariables.OutputFileSeparator, DateTime.Now.ToString(ConfigVariables.OutputFileDateFormatString), _outputSuffix, ConfigVariables.OutputFileSuffixCSV);
                 FileInfo newCSVFile = new FileInfo(Path.Combine(_workingDirectory, newCSVFileName));
                 List<OutputModelCSV> output = new List<OutputModelCSV>();
                 foreach (DataRow row in _input)
@@ -73,22 +73,23 @@ namespace KABService.Helper
                     object[] rowArray = row.ItemArray;
                     OutputModelCSV model = new OutputModelCSV
                     {
-                        Selskab = (string)rowArray[0],
-                        Afdeling = (string)rowArray[1],
-                        Lejlighed = (string)rowArray[2],
-                        Målertype = (string)rowArray[4],
-                        Serienr = (string)rowArray[5],
-                        Aflæsningsdato = (string)rowArray[7],
-                        Aflæsning = (string)rowArray[8],
-                        Faktor = (string)rowArray[9],
-                        Reduktion = (string)rowArray[10],
-                        Lokale = (string)rowArray[11],
-                        Installationsdato = (string)rowArray[12],
+                        Selskab = _factorModel.CompanyColumn < 0 ? _factorModel.CompanyID : Convert.ToString(rowArray[_factorModel.CompanyColumn]),
+                        Afdeling = _factorModel.DepartmentColumn < 0 ? _factorModel.DepartmentID : Convert.ToString(rowArray[_factorModel.DepartmentColumn]),
+                        Lejlighed = _factorModel.ApartmentColumn < 0 ? string.Empty : Convert.ToString(rowArray[_factorModel.ApartmentColumn]),
+                        Målertype = _factorModel.MaalerColumn < 0 ? _factorModel.MaalerType : Convert.ToString(rowArray[_factorModel.MaalerColumn]),
+                        Serienr = _factorModel.SerieIDColumn < 0 ? string.Empty : Convert.ToString(rowArray[_factorModel.SerieIDColumn]),
+                        Aflæsningsdato = _factorModel.ReadDateColumn < 0 ? _factorModel.ReadDate : Convert.ToString(rowArray[_factorModel.ReadDateColumn]),
+                        Aflæsning = _factorModel.ReadColumn < 0 ? string.Empty : Convert.ToString(rowArray[_factorModel.ReadColumn]),
+                        Faktor = _factorModel.FaktorColumn < 0 ? _factorModel.Factor.ToString() : Convert.ToString(rowArray[_factorModel.FaktorColumn]),
+                        Reduktion = _factorModel.ReductionColumn < 0 ? string.Empty : Convert.ToString(rowArray[_factorModel.ReductionColumn]),
+                        Lokale = _factorModel.RoomColumn < 0 ? string.Empty : Convert.ToString(rowArray[_factorModel.RoomColumn]),
+                        Installationsdato = _factorModel.InstallationDateColumn < 0 ? string.Empty : Convert.ToString(rowArray[_factorModel.InstallationDateColumn]),
                         Deaktiveringsdato = "",
                         Bemærkninger = "",
-                        Nulstillingsmåler = ""
+                        Nulstillingsmåler = _factorModel.Nustillingsmaaler
                     };
-
+                    //string1 = string2 ?? string.Empty
+                    
                     output.Add(model);
                 }
 
@@ -100,9 +101,9 @@ namespace KABService.Helper
                 csv.Flush();
                 return newCSVFile.FullName;
             }
-            catch(Exception)
+            catch(Exception ex)
             {
-                return string.Empty;
+                return ex.Message;
             }
         }
     }

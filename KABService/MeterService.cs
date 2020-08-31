@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.IO;
+using System.Text.RegularExpressions;
 
 namespace KABService
 {
@@ -42,18 +43,15 @@ namespace KABService
                             {
                                 FileInfo fileInfo = new FileInfo(file);
                                 string newFileName = string.Empty;
+                                string newErrorFileName = string.Empty;
                                 DataTable outputDataTable = new DataTable();
+                                DataTable unikDataTable = new DataTable();
+                                
 
-                                // 3. create factor object based on company
+                                // 3. Get company name based on directory
                                 var company = getCompanyByDirectoryName(directory);
 
-                                FactorModel factorModel = createFactorModelByCompany(company);
-                               
-                                if(factorModel == null)
-                                {
-                                    throw new Exception("Vendor configuration error. Cannot create factor model based based on vendor information.");
-                                }
-
+                        
                                 // 4. Reading from files.
                                 CSVHelper csvHelper = new CSVHelper(_logger, _configuration);
                                 ExcelHelper excelHelper = new ExcelHelper(_logger, _configuration);
@@ -67,24 +65,37 @@ namespace KABService
                                 {
                                     // handling Excel files
                                     excelVersion = "12.0";
-                                    outputDataTable = excelHelper.ReadDataAsDataTable(file, directory, excelVersion);
+                                    outputDataTable = excelHelper.ReadDataAsDataTable(file, excelVersion);
                                 }
                                 else if(fileInfo.Extension == ".xls")
                                 {
                                     // handling Excel files
                                     excelVersion = "8.0";
-                                    outputDataTable = excelHelper.ReadDataAsDataTable(file, directory, excelVersion);
+                                    outputDataTable = excelHelper.ReadDataAsDataTable(file, excelVersion);
                                 }
                                 else
                                 {
                                     throw new FileLoadException("File format is not supported");
                                 }
 
+                                // 4.1 Create factormodel based on company, outputdata and data from unik
+                                FactorModel factorModel = BusinessLogic.CreateFactorModelByCompany(company, unikDataTable, outputDataTable);
+
+                                if (factorModel == null)
+                                {
+                                    throw new Exception("Vendor configuration error. Cannot create factor model based based on vendor information.");
+                                }
+
                                 // 5. Filter source data.
-                                IEnumerable<DataRow> filteredData = filterDataByCompany(outputDataTable, factorModel, company);
+                                IEnumerable<DataRow> filteredData = BusinessLogic.FilterDataByCompany(outputDataTable, factorModel, company);
+
+                                IEnumerable<DataRow> errorData = BusinessLogic.ErrorDataByCompany(outputDataTable, factorModel, company);
 
                                 // 6. Save data to file.
-                                newFileName = csvHelper.SaveDataToFile(filteredData, company, directory);
+                                newFileName = csvHelper.SaveDataToFile(filteredData, factorModel, company, directory, ConfigVariables.OutputFileNameSuffix);
+
+                                newErrorFileName = csvHelper.SaveDataToFile(errorData, factorModel, company, directory, ConfigVariables.ErrorFileNameSuffix);
+
 
                                 if (String.IsNullOrEmpty(newFileName))
                                 {
@@ -143,42 +154,6 @@ namespace KABService
             return company;
         }
 
-        private FactorModel createFactorModelByCompany(string _company)
-        {
-            switch (_company)
-            {
-                case "1902 Ista":
-                    return new FactorModel()
-                    {
-                        CompanyColumn = 0,
-                        DepartmentColumn = 1,
-                        ApartmentColumn = 2,
-                        MaalerColumn = 4,
-                        SerieIDColumn = 5,
-                        ReadDateColumn = 7,
-                        ReadColumn = 8,
-                        FaktorColumn = 9,
-                        ReductionColumn = 10,
-                        RoomColumn = 11,
-                        InstallationDateColumn = 12,
-                        MaalerType = "Doprimo 3 SoC"
-                    };
-                default:
-                    _logger.LogWarning("Unknow company/vendor name is found.");
-                    return null;
-            }
-        }
-
-        private IEnumerable<DataRow> filterDataByCompany(DataTable _input, FactorModel _factorModel, string _company)
-        {
-            switch (_company)
-            {
-                case "1902 Ista":
-                    return _input.AsEnumerable().Where(x => x[_factorModel.ReadDateColumn].Equals(_factorModel.SearchCriteria) && x[_factorModel.MaalerColumn].ToString().Contains(_factorModel.MaalerType));
-                default:
-                    _logger.LogWarning("Unknow company/vendor name is found.");
-                    return null;
-            }
-        }
+                
     }
 }

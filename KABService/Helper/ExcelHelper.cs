@@ -25,21 +25,37 @@ namespace KABService.Helper
         }
 
         // Data tranformation for new output
-        public DataTable ReadDataAsDataTable(string _fileName, string _sheetName, string _excelVersion)
+        
+        public DataTable ReadDataAsDataTable(string _fileName, string _excelVersion)
         {
-            string sqlQuery = "Select * From " + _sheetName;
+            string sheetName;
+
             DataSet ds = new DataSet();
             DataTable dt = new DataTable();
             string connectionString = @"Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + _fileName + ";Extended Properties=\"Excel " + _excelVersion + ";HDR=YES;\"";
-
             OleDbConnection con = new OleDbConnection(connectionString + "");
+
+            //Open the connection and get tables in the Excel sheet
+            con.Open();
+
+            dt = con.GetSchema("Tables");
+
+            con.Close();
+
+            // The first sheetname is always index 0 and index 2 in the itemarray
+            sheetName = dt.Rows[0].ItemArray[2].ToString();
+
+            string sqlQuery = "Select * From [" + sheetName + "]";
             OleDbDataAdapter da = new OleDbDataAdapter(sqlQuery, con);
+            
             da.Fill(ds);
 
             dt = ds.Tables[0];
 
             return dt;
         }
+
+        
 
         public string SaveDataToFile(IEnumerable<DataRow> _input, FactorModel _factorModel, string _company, string _workingDirectory)
         {
@@ -59,19 +75,19 @@ namespace KABService.Helper
 
                 //Insert headers
                 worksheet.Cells[1, 1].Value = ConfigVariables.Company;
-                worksheet.Cells[1, 2].Value = "Afdeling";
-                worksheet.Cells[1, 3].Value = "Lejlighed";
-                worksheet.Cells[1, 4].Value = "Målertype";
-                worksheet.Cells[1, 5].Value = "Serienr";
-                worksheet.Cells[1, 6].Value = "Aflæsningsdato";
-                worksheet.Cells[1, 7].Value = "Aflæsning";
-                worksheet.Cells[1, 8].Value = "Faktor";
-                worksheet.Cells[1, 9].Value = "Reduktion";
-                worksheet.Cells[1, 10].Value = "Lokale";
-                worksheet.Cells[1, 11].Value = "Installation";
-                worksheet.Cells[1, 12].Value = "Deaktiveringsdato";
-                worksheet.Cells[1, 13].Value = "Bemærkning";
-                worksheet.Cells[1, 14].Value = "Nulstillingsmåler";
+                worksheet.Cells[1, 2].Value = ConfigVariables.Department;
+                worksheet.Cells[1, 3].Value = ConfigVariables.Apartment;
+                worksheet.Cells[1, 4].Value = ConfigVariables.MeterType;
+                worksheet.Cells[1, 5].Value = ConfigVariables.SerieID;
+                worksheet.Cells[1, 6].Value = ConfigVariables.ReadingDate;
+                worksheet.Cells[1, 7].Value = ConfigVariables.Reading;
+                worksheet.Cells[1, 8].Value = ConfigVariables.Factor;
+                worksheet.Cells[1, 9].Value = ConfigVariables.Reduction;
+                worksheet.Cells[1, 10].Value = ConfigVariables.Room;
+                worksheet.Cells[1, 11].Value = ConfigVariables.Installation;
+                worksheet.Cells[1, 12].Value = ConfigVariables.DeactivationDate;
+                worksheet.Cells[1, 13].Value = ConfigVariables.Comment;
+                worksheet.Cells[1, 14].Value = ConfigVariables.ResetMeter;
 
                 //Insert apartment data
                 worksheet.Cells["C2"].LoadFromCollection(_input.AsEnumerable().Select(x => x[_factorModel.ApartmentColumn].ToString()).ToList());
