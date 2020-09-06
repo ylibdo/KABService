@@ -15,6 +15,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 
+
 namespace KABService.Helper
 {
     public class ExcelTest
@@ -61,7 +62,7 @@ namespace KABService.Helper
                 outputDataTable.Rows[0].Delete();
                 outputDataTable.AcceptChanges();
             }
-            else if (fileInfo.Extension == ".xlsx")
+            else if (fileInfo.Extension == ".xlsx" || fileInfo.Extension == ".xlsb")
             {
                 // handling Excel files
                 excelVersion = "12.0";
@@ -85,10 +86,13 @@ namespace KABService.Helper
                 throw new Exception("Vendor configuration error. Cannot create factor model based based on vendor information.");
             }
 
+            var tester = Convert.ToDateTime(outputDataTable.Rows[0].ItemArray[7]).ToString("dd-MM-yyyy");
+
 
             try
             {
                 // 5. Filter source data.
+                //IEnumerable<DataRow> filteredData = BusinessLogic.FilterDataByCompany(outputDataTable, factorModel, company);
                 IEnumerable<DataRow> filteredData = BusinessLogic.FilterDataByCompany(outputDataTable, factorModel, company);
 
                 IEnumerable<DataRow> errorData = BusinessLogic.ErrorDataByCompany(outputDataTable, factorModel, company);

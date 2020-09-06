@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Text;
 
 namespace KABService.Models
@@ -12,6 +13,7 @@ namespace KABService.Models
         public string DepartmentID { get; set; }
         public int ApartmentColumn { get; set; }
         public int MaalerColumn { get; set; }
+        public int MaalerTypeColumn { get; set; }
         public int SerieIDColumn { get; set; }
         public int ReadDateColumn { get; set; }
         public int ReadColumn { get; set; }
@@ -28,6 +30,7 @@ namespace KABService.Models
         public string Nustillingsmaaler { get; set; }
         public string ReadDate { get; set; }
         public string ReadDateFormatted { get; set; }
+        public DataRow MaalerRow { get; set; }
 
         public FactorModel()
         {

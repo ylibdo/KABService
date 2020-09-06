@@ -37,7 +37,16 @@ namespace KABService
                     {
                         var files = Directory.EnumerateFiles(directory);
                         string excelVersion = string.Empty;
-                        foreach(var file in files)
+                        CSVHelper csvHelper = new CSVHelper(_logger, _configuration);
+                        ExcelHelper excelHelper = new ExcelHelper(_logger, _configuration);
+                        DataTable unikDataTable = new DataTable();
+
+                        // 2.2 Read the Unik data
+                        //unikDataTable = excelHelper.ReadDataAsDataTable("E:\\KAB Services\\MeterService\\UnikData\\UnikData.xlsx", "12.0");
+                        unikDataTable = excelHelper.ReadDataAsDataTable("E:\\KAB Services\\MeterService\\UnikData\\UnikData_2019.xlsx", "12.0");
+                        
+
+                        foreach (var file in files)
                         {
                             try
                             {
@@ -45,23 +54,28 @@ namespace KABService
                                 string newFileName = string.Empty;
                                 string newErrorFileName = string.Empty;
                                 DataTable outputDataTable = new DataTable();
-                                DataTable unikDataTable = new DataTable();
+                                
                                 
 
                                 // 3. Get company name based on directory
                                 var company = getCompanyByDirectoryName(directory);
 
-                        
+                                
+
                                 // 4. Reading from files.
-                                CSVHelper csvHelper = new CSVHelper(_logger, _configuration);
-                                ExcelHelper excelHelper = new ExcelHelper(_logger, _configuration);
+                                
+
+                                
+
                                 if (fileInfo.Extension == ".csv")
                                 {
                                     // handling CSV files
                                     
                                     outputDataTable = csvHelper.ReadDataAsDataTable(file);
+                                    outputDataTable.Rows[0].Delete();
+                                    outputDataTable.AcceptChanges();
                                 }
-                                else if (fileInfo.Extension == ".xlsx")
+                                else if (fileInfo.Extension == ".xlsx" || fileInfo.Extension == ".xlsb")
                                 {
                                     // handling Excel files
                                     excelVersion = "12.0";
@@ -79,12 +93,14 @@ namespace KABService
                                 }
 
                                 // 4.1 Create factormodel based on company, outputdata and data from unik
+
                                 FactorModel factorModel = BusinessLogic.CreateFactorModelByCompany(company, unikDataTable, outputDataTable);
 
                                 if (factorModel == null)
                                 {
                                     throw new Exception("Vendor configuration error. Cannot create factor model based based on vendor information.");
                                 }
+
 
                                 // 5. Filter source data.
                                 IEnumerable<DataRow> filteredData = BusinessLogic.FilterDataByCompany(outputDataTable, factorModel, company);
@@ -104,6 +120,15 @@ namespace KABService
                                 else
                                 {
                                     directioryHelper.MoveFile(directory, newFileName, BDOEnum.FileMoveOption.Processed);
+                                }
+
+                                if (String.IsNullOrEmpty(newErrorFileName))
+                                {
+                                    throw new NullReferenceException();
+                                }
+                                else
+                                {
+                                    directioryHelper.MoveFile(directory, newErrorFileName, BDOEnum.FileMoveOption.Manual);
                                 }
                                 // 7. Move processed file to archive
                                 directioryHelper.MoveFile(directory, file, BDOEnum.FileMoveOption.Archive);
