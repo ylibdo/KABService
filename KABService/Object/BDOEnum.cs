@@ -6,7 +6,7 @@ namespace KABService.Object
 {
     static class BDOEnum
     {
-        public enum FileMoveOption { Processed, Archive, Error}
+        public enum FileMoveOption { Processed, Archive, Error, Manual}
 
         public enum LogLevel { Info, Warning, Error } 
     }
