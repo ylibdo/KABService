@@ -1,9 +1,8 @@
 {
   "ExpandedNodes": [
     "",
-    "\\KABService",
-    "\\KABService\\Object"
+    "\\KABService"
   ],
-  "SelectedNode": "\\KABService\\Object\\BDOEnum.cs",
+  "SelectedNode": "\\KABService\\Object",
   "PreviewInSolutionExplorer": false
 }
