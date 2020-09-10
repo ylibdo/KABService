@@ -9,13 +9,13 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System.Linq;
 using System.Globalization;
+using UtilityLibrary.Log;
+using static UtilityLibrary.Log.LogObject;
 
 namespace KABService.Helper
 {
     class BusinessLogic
-    {
-
-               
+    {       
         public static FactorModel CreateFactorModelByCompany(string _company, DataTable _unikDatatable, DataTable _outputDatatable)
         
         {
@@ -205,9 +205,9 @@ namespace KABService.Helper
                     return brunata;
 
                 default:
-                    
-                    throw new Exception("Unknow company/vendor name is found.");
+                    LogHelper.InsertLog(new LogObject(LogType.Error, "Vendor/company naming error."));
 
+                    return null;
             }
         }
 

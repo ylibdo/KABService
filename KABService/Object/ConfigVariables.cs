@@ -31,5 +31,11 @@ namespace KABService.Object
         public const string ResetMeter = "Nulstillingsmåler";
 
 
+        // log
+        public const string LogDirectory = @"D:\Sftp local";
+        public const string SubDirectoryNameDateFormat = "yyyyMMdd";
+        public const string LogFileNameDateFormat = "yyyyMMddHHmm";
+        public const string LogFileName = "mylogfile_";
+
     }
 }
