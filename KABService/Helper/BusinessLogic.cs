@@ -62,6 +62,7 @@ namespace KABService.Helper
                         casi.MaalerType = casi.MaalerRow.ItemArray[2].ToString();
                         casi.Nustillingsmaaler = casi.MaalerRow.ItemArray[3].ToString();
                         casi.ReadDate = casi.MaalerRow.ItemArray[5].ToString();
+                        casi.ReadDate = casi.MaalerRow.ItemArray[14].ToString();
                         //casi.ReadDate = "2019-12-31";
                     }
 
@@ -90,9 +91,10 @@ namespace KABService.Helper
 
                     if (ista.MaalerRow != null)
                     {
-                        ista.MaalerType = ista.MaalerRow.ItemArray[2].ToString();
+                        ista.MaalerType = ista.MaalerRow.ItemArray[2].ToString().Split(" ")[0];
                         ista.Nustillingsmaaler = ista.MaalerRow.ItemArray[3].ToString();
                         ista.ReadDate = ista.MaalerRow.ItemArray[5].ToString();
+                        ista.ReadDate = ista.MaalerRow.ItemArray[14].ToString();
                         //ista.ReadDate = "2019-12-31";
                     }
                                         
@@ -128,6 +130,7 @@ namespace KABService.Helper
                         minol.MaalerType = minol.MaalerRow.ItemArray[2].ToString();
                         minol.Nustillingsmaaler = minol.MaalerRow.ItemArray[3].ToString();
                         minol.ReadDate = minol.MaalerRow.ItemArray[5].ToString();
+                        minol.ReadDate = minol.MaalerRow.ItemArray[14].ToString();
                     }
 
                     return minol;
@@ -158,6 +161,7 @@ namespace KABService.Helper
                         techem.MaalerType = techem.MaalerRow.ItemArray[2].ToString();
                         techem.Nustillingsmaaler = techem.MaalerRow.ItemArray[3].ToString();
                         techem.ReadDate = techem.MaalerRow.ItemArray[5].ToString();
+                        techem.ReadDate = techem.MaalerRow.ItemArray[14].ToString();
                     }
 
                     //Temp value
@@ -196,6 +200,7 @@ namespace KABService.Helper
                         brunata.MaalerType = brunata.MaalerRow.ItemArray[2].ToString();
                         brunata.Nustillingsmaaler = brunata.MaalerRow.ItemArray[3].ToString();
                         brunata.ReadDate = brunata.MaalerRow.ItemArray[5].ToString();
+                        brunata.ReadDate = brunata.MaalerRow.ItemArray[14].ToString();
                     }
 
                     //Temp condition - Unik data is 2020 year and csv file is 2019
@@ -237,12 +242,7 @@ namespace KABService.Helper
                 case "1008 Casi":
                     return dtCloned.AsEnumerable().Where(x => !x[_factorModel.ReadColumn].ToString().Contains(_factorModel.SearchCriteria));
                 case "1902 Ista":
-                    var test = _input.AsEnumerable().Where(x => Convert.ToDateTime(x[_factorModel.ReadDateColumn].ToString()).ToString("yyyy-MM-dd").Contains(_factorModel.ReadDate));
-                    var tester2 = _input.AsEnumerable().Where(x => x[_factorModel.MaalerColumn].ToString().ToLower().Contains(_factorModel.MaalerType.ToLower()));
-                    var test2 = _factorModel.MaalerType;
-                    var test3 = _input.Rows[1].ItemArray[4].ToString();
-                    var tester3 = _input.AsEnumerable().Where(x => _factorModel.MaalerType.ToLower().Contains(x[_factorModel.MaalerColumn].ToString().ToLower()));
-                    IEnumerable<DataRow> filteredValueIsta = dtCloned.AsEnumerable().Where(x => Convert.ToDateTime(x[_factorModel.ReadDateColumn].ToString()).ToString("yyyy-MM-dd").Contains(_factorModel.ReadDate) && x[_factorModel.MaalerColumn].ToString().ToLower().Contains(_factorModel.MaalerType.ToLower()));
+                    IEnumerable<DataRow> filteredValueIsta = dtCloned.AsEnumerable().Where(x => Convert.ToDateTime(x[_factorModel.ReadDateColumn].ToString()).ToString("dd-MM-yyyy").Contains(Convert.ToDateTime(_factorModel.ReadDate.ToString()).ToString("dd-MM-yyyy")) && x[_factorModel.MaalerColumn].ToString().ToLower().Contains(_factorModel.MaalerType.ToLower()));
                     List<DataRow> outputIsta = new List<DataRow>();
                     foreach (DataRow item in filteredValueIsta.ToList())
                     {
@@ -268,6 +268,7 @@ namespace KABService.Helper
                     {
                         item[_factorModel.MaalerColumn] = item[_factorModel.MaalerColumn].ToString().Replace("vandsmåler", "t vand");
                         item[_factorModel.ApartmentColumn] = item[_factorModel.ApartmentColumn].ToString().Substring(0, item[_factorModel.ApartmentColumn].ToString().Length - 1);
+                        item[_factorModel.ReadDateColumn] = Convert.ToDateTime(_factorModel.ReadDate.ToString()).ToString("dd-MM-yyyy");
                         outputTechem.Add(item);
                     }
                     return outputTechem;
@@ -276,7 +277,7 @@ namespace KABService.Helper
                     List<DataRow> outputBrunata = new List<DataRow>();
                     foreach (DataRow item in filteredValueBrunata.ToList())
                     {
-                        item[_factorModel.ReadDateColumn] = _factorModel.ReadDate;
+                        item[_factorModel.ReadDateColumn] = Convert.ToDateTime(_factorModel.ReadDate.ToString()).ToString("dd-MM-yyyy");
                         outputBrunata.Add(item);
                     }
                     return outputBrunata;
@@ -310,7 +311,7 @@ namespace KABService.Helper
                 case "1008 Casi":
                     return dtCloned.AsEnumerable().Where(x => x[_factorModel.ReadColumn].ToString().Contains(_factorModel.SearchCriteria));
                 case "1902 Ista":
-                    IEnumerable<DataRow> filteredValueIsta = dtCloned.AsEnumerable().Where(x => Convert.ToDateTime(x[_factorModel.ReadDateColumn].ToString()).ToString("yyyy-MM-dd").Contains(_factorModel.ReadDate) && !x[_factorModel.MaalerColumn].ToString().ToLower().Contains(_factorModel.MaalerType.ToLower()));
+                    IEnumerable<DataRow> filteredValueIsta = dtCloned.AsEnumerable().Where(x => Convert.ToDateTime(x[_factorModel.ReadDateColumn].ToString()).ToString("dd-MM-yyyy").Contains(Convert.ToDateTime(_factorModel.ReadDate.ToString()).ToString("dd-MM-yyyy")) && !x[_factorModel.MaalerColumn].ToString().ToLower().Contains(_factorModel.MaalerType.ToLower()));
                     List<DataRow> outputIsta = new List<DataRow>();
                     foreach (DataRow item in filteredValueIsta.ToList())
                     {
@@ -333,7 +334,7 @@ namespace KABService.Helper
                     List<DataRow> outputBrunata = new List<DataRow>();
                     foreach (DataRow item in filteredValueBrunata.ToList())
                     {
-                        item[_factorModel.ReadDateColumn] = _factorModel.ReadDate;
+                        item[_factorModel.ReadDateColumn] = Convert.ToDateTime(_factorModel.ReadDate.ToString()).ToString("dd-MM-yyyy");
                         outputBrunata.Add(item);
                     }
                     return outputBrunata;

@@ -9,7 +9,7 @@ namespace KABService.Object
         public const string OutputFileSeparator = "_";
         public const string OutputFileSuffixCSV = ".csv";
         public const string OutputFileSuffixExcel = ".xlsx";
-        public const string OutputFileDateFormatString = "yyyyMMddHHmmss";
+        public const string OutputFileDateFormatString = "yyyyMMddHHmmssFFF";
         public const string OutputFileNameSuffix = "_unik";
         public const string ErrorFileNameSuffix = "_manuelbehandling";
 
