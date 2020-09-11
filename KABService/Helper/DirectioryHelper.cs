@@ -58,7 +58,10 @@ namespace KABService.Helper
             try
             {
                 var targetPath = Path.Combine(_workingDirectory, _fileMoveOption.ToString());
-                
+                if (!Directory.Exists(targetPath))
+                {
+                    Directory.CreateDirectory(targetPath);
+                }
                 Directory.Move(_fileName, Path.Combine(targetPath, _fileName.Substring(_workingDirectory.Length + 1)));
 
                 _logger.LogInformation("File: " + _fileName + " is moved with action " + _fileMoveOption.ToString());
