@@ -63,6 +63,7 @@ namespace KABService
                                 string newErrorFileName = string.Empty;
                                 DataTable outputDataTable = new DataTable();
 
+
                                 // 3. Get company name based on directory
                                 var company = getCompanyByDirectoryName(directory);
 
@@ -73,8 +74,17 @@ namespace KABService
                                     // handling CSV files
                                     
                                     outputDataTable = csvHelper.ReadDataAsDataTable(file);
-                                    outputDataTable.Rows[0].Delete();
-                                    outputDataTable.AcceptChanges();
+
+                                    var stringArray = string.Join(", ", outputDataTable.Rows[0].ItemArray);
+
+                                    var isNumeric = Regex.Match(stringArray, "[0-9]", RegexOptions.IgnoreCase).Success;
+
+                                    if (!isNumeric)
+                                    {
+                                        outputDataTable.Rows[0].Delete();
+                                        outputDataTable.AcceptChanges();
+                                    }
+                                    
                                 }
                                 else if (fileInfo.Extension == ".xlsx" || fileInfo.Extension == ".xlsb")
                                 {
