@@ -9,7 +9,7 @@ namespace KABService.Object
     {
         public enum FileMoveOption { Processed, Archive, Error, Manual}
 
-        public enum LogLevel { Info, Warning, Error }
+        public enum LogLevel { Info, Warning, Error } 
 
         public enum MaalerTypeLong
         {
@@ -21,8 +21,7 @@ namespace KABService.Object
             HW = 2
         }
 
-
-        public static string GetMaalerTypeDescription(string _value)
+        public static string GetMaalerDescription(string _value)
         {
             MaalerTypeLong maaler = (MaalerTypeLong)Enum.Parse(typeof(MaalerTypeLong), _value);
             return GetAttributeOfType<DescriptionAttribute>(maaler).Description;

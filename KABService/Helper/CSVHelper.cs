@@ -65,7 +65,7 @@ namespace KABService.Helper
         {
             try
             {
-                string newCSVFileName = string.Concat(_company, ConfigVariables.OutputFileSeparator, DateTime.Now.ToString(ConfigVariables.OutputFileDateFormatString), _outputSuffix, ConfigVariables.OutputFileSuffixCSV);
+                string newCSVFileName = string.Concat(_factorModel.CompanyID, _factorModel.DepartmentID," ",_company, ConfigVariables.OutputFileSeparator, DateTime.Now.ToString(ConfigVariables.OutputFileDateFormatString), _outputSuffix, ConfigVariables.OutputFileSuffixCSV);
                 FileInfo newCSVFile = new FileInfo(Path.Combine(_workingDirectory, newCSVFileName));
                 List<OutputModelCSV> output = new List<OutputModelCSV>();
                 foreach (DataRow row in _input)

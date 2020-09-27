@@ -9,8 +9,8 @@ namespace KABService.Object
         public const string OutputFileSeparator = "_";
         public const string OutputFileSuffixCSV = ".csv";
         public const string OutputFileSuffixExcel = ".xlsx";
-        public const string OutputFileDateFormatString = "yyyyMMddHHmmss";
-        public const string OutputFileNameSuffix = "_unik";
+        public const string OutputFileDateFormatString = "yyyyMMddHHmmssFFF";
+        public const string OutputFileNameSuffix = "_indlæsningsfil";
         public const string ErrorFileNameSuffix = "_manuelbehandling";
 
 
@@ -32,7 +32,7 @@ namespace KABService.Object
 
 
         // log
-        public const string LogDirectory = @"D:\Sftp local";
+        public const string LogDirectory = @"E:\KAB Services\MeterService\Log";
         public const string SubDirectoryNameDateFormat = "yyyyMMdd";
         public const string LogFileNameDateFormat = "yyyyMMddHHmm";
         public const string LogFileName = "mylogfile_";

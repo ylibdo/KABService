@@ -11,6 +11,7 @@ using System.Linq;
 using System.Globalization;
 using UtilityLibrary.Log;
 using static UtilityLibrary.Log.LogObject;
+using KABService.Object;
 
 namespace KABService.Helper
 {
@@ -30,7 +31,7 @@ namespace KABService.Helper
 
             switch (_company)
             {
-                case "1008 Casi":
+                case "Casi":
 
                     FactorModel casi = new FactorModel();
                     casi.CompanyColumn = -1;
@@ -49,8 +50,8 @@ namespace KABService.Helper
                     casi.DepartmentID = Regex.Match(_company, regexPattern).Value.ToString().Substring(2, 2);
                     casi.DepartmentID = Convert.ToString(Convert.ToInt32(casi.DepartmentID));
                     casi.SearchCriteria = "s";
-                    //casi.CompanyID = "10";
-                    //casi.DepartmentID = "8";
+                    casi.CompanyID = "10";
+                    casi.DepartmentID = "08";
 
                     casi.MaalerColumnName = _outputDatatable.Columns[3].ToString();
                     casi.MaalerControlText = _outputDatatable.Select(casi.MaalerColumnName + " IS NOT NULL AND " + casi.MaalerColumnName + " <> ''").First().ItemArray[3].ToString();
@@ -62,12 +63,13 @@ namespace KABService.Helper
                         casi.MaalerType = casi.MaalerRow.ItemArray[2].ToString();
                         casi.Nustillingsmaaler = casi.MaalerRow.ItemArray[3].ToString();
                         casi.ReadDate = casi.MaalerRow.ItemArray[5].ToString();
+                        casi.ReadDate = casi.MaalerRow.ItemArray[14].ToString();
                         //casi.ReadDate = "2019-12-31";
                     }
 
                     return casi;
                     
-                case "1902 Ista":
+                case "Ista":
                     FactorModel ista = new FactorModel();
                     ista.CompanyColumn = 0;
                     ista.DepartmentColumn = 1;
@@ -86,20 +88,27 @@ namespace KABService.Helper
                     ista.CompanyID = ista.CompanyID.Length >= 4 ? ista.CompanyID.Substring(0, 2) : ista.CompanyID;
                     ista.DepartmentID = Convert.ToString(Convert.ToInt32(ista.DepartmentID));
 
+                    var listTest = BDOEnum.GetMaalerDescription(_outputDatatable.Rows[1].ItemArray[ista.MaalerTypeColumn].ToString());
+
+
+
                     ista.MaalerRow = _unikDatatable.AsEnumerable().FirstOrDefault(x => x[unikCompanyColumn].ToString().Equals(ista.CompanyID) && x[unikDepartmentColumn].ToString().Equals(ista.DepartmentID));
+
+                    var tester123 = _unikDatatable.AsEnumerable().Where(x => x[unikCompanyColumn].ToString().Equals(ista.CompanyID) && x[unikDepartmentColumn].ToString().Equals(ista.DepartmentID));
 
                     if (ista.MaalerRow != null)
                     {
-                        ista.MaalerType = ista.MaalerRow.ItemArray[2].ToString();
+                        ista.MaalerType = ista.MaalerRow.ItemArray[2].ToString().Split(" ")[0];
                         ista.Nustillingsmaaler = ista.MaalerRow.ItemArray[3].ToString();
                         ista.ReadDate = ista.MaalerRow.ItemArray[5].ToString();
+                        ista.ReadDate = ista.MaalerRow.ItemArray[14].ToString();
                         //ista.ReadDate = "2019-12-31";
                     }
                                         
 
                     return ista;
 
-                case "3020 Minol":
+                case "Minol":
                     FactorModel minol = new FactorModel();
 
                     minol.CompanyColumn = -1;
@@ -116,6 +125,8 @@ namespace KABService.Helper
                     minol.SearchCriteriaColumn = 3;
                     minol.CompanyID = Regex.Match(_company, regexPattern).Value.ToString().Substring(0, 2);
                     minol.DepartmentID = Regex.Match(_company, regexPattern).Value.ToString().Substring(2, 2);
+                    minol.CompanyID = "30";
+                    minol.DepartmentID = "20";
                     //minol.CompanyID = _outputDatatable.Rows[0].ItemArray[0].ToString();
                     //minol.DepartmentID = minol.CompanyID.Length >= 4 ? minol.CompanyID.Substring(2, 2) : _outputDatatable.Rows[0].ItemArray[1].ToString();
                     //minol.CompanyID = minol.CompanyID.Length >= 4 ? minol.CompanyID.Substring(0, 2) : minol.CompanyID;
@@ -128,11 +139,12 @@ namespace KABService.Helper
                         minol.MaalerType = minol.MaalerRow.ItemArray[2].ToString();
                         minol.Nustillingsmaaler = minol.MaalerRow.ItemArray[3].ToString();
                         minol.ReadDate = minol.MaalerRow.ItemArray[5].ToString();
+                        minol.ReadDate = Convert.ToDateTime(minol.MaalerRow.ItemArray[14].ToString()).ToString("dd-MM-yyyy");
                     }
 
                     return minol;
 
-                case "3920 Techem":
+                case "Techem":
                     FactorModel techem = new FactorModel();
 
                     techem.CompanyColumn = -1;
@@ -158,6 +170,7 @@ namespace KABService.Helper
                         techem.MaalerType = techem.MaalerRow.ItemArray[2].ToString();
                         techem.Nustillingsmaaler = techem.MaalerRow.ItemArray[3].ToString();
                         techem.ReadDate = techem.MaalerRow.ItemArray[5].ToString();
+                        techem.ReadDate = Convert.ToDateTime(techem.MaalerRow.ItemArray[14].ToString()).ToString("dd-MM-yyyy");
                     }
 
                     //Temp value
@@ -167,7 +180,7 @@ namespace KABService.Helper
 
                     return techem;
 
-                case "4201 Brunata":
+                case "Brunata":
                     FactorModel brunata = new FactorModel();
 
                     brunata.CompanyColumn = -1;
@@ -196,6 +209,7 @@ namespace KABService.Helper
                         brunata.MaalerType = brunata.MaalerRow.ItemArray[2].ToString();
                         brunata.Nustillingsmaaler = brunata.MaalerRow.ItemArray[3].ToString();
                         brunata.ReadDate = brunata.MaalerRow.ItemArray[5].ToString();
+                        brunata.ReadDate = brunata.MaalerRow.ItemArray[14].ToString();
                     }
 
                     //Temp condition - Unik data is 2020 year and csv file is 2019
@@ -229,20 +243,16 @@ namespace KABService.Helper
 
             foreach (DataRow row in _input.Rows)
             {
+
                 dtCloned.ImportRow(row);
             }
 
             switch (_company)
             {
-                case "1008 Casi":
+                case "Casi":
                     return dtCloned.AsEnumerable().Where(x => !x[_factorModel.ReadColumn].ToString().Contains(_factorModel.SearchCriteria));
-                case "1902 Ista":
-                    var test = _input.AsEnumerable().Where(x => Convert.ToDateTime(x[_factorModel.ReadDateColumn].ToString()).ToString("yyyy-MM-dd").Contains(_factorModel.ReadDate));
-                    var tester2 = _input.AsEnumerable().Where(x => x[_factorModel.MaalerColumn].ToString().ToLower().Contains(_factorModel.MaalerType.ToLower()));
-                    var test2 = _factorModel.MaalerType;
-                    var test3 = _input.Rows[1].ItemArray[4].ToString();
-                    var tester3 = _input.AsEnumerable().Where(x => _factorModel.MaalerType.ToLower().Contains(x[_factorModel.MaalerColumn].ToString().ToLower()));
-                    IEnumerable<DataRow> filteredValueIsta = dtCloned.AsEnumerable().Where(x => Convert.ToDateTime(x[_factorModel.ReadDateColumn].ToString()).ToString("yyyy-MM-dd").Contains(_factorModel.ReadDate) && x[_factorModel.MaalerColumn].ToString().ToLower().Contains(_factorModel.MaalerType.ToLower()));
+                case "Ista":
+                    IEnumerable<DataRow> filteredValueIsta = dtCloned.AsEnumerable().Where(x => Convert.ToDateTime(x[_factorModel.ReadDateColumn].ToString()).ToString("dd-MM-yyyy").Contains(Convert.ToDateTime(_factorModel.ReadDate.ToString()).ToString("dd-MM-yyyy")) && x[_factorModel.MaalerColumn].ToString().ToLower().Contains(_factorModel.MaalerType.ToLower()) && !string.IsNullOrWhiteSpace(x[_factorModel.ReadColumn].ToString()));
                     List<DataRow> outputIsta = new List<DataRow>();
                     foreach (DataRow item in filteredValueIsta.ToList())
                     {
@@ -259,24 +269,25 @@ namespace KABService.Helper
                         outputIsta.Add(item);
                     }
                     return outputIsta;
-                case "3020 Minol":
+                case "Minol":
                     return dtCloned.AsEnumerable().Where(x => !string.IsNullOrEmpty(x[_factorModel.ReadColumn].ToString()) && string.IsNullOrWhiteSpace(x[_factorModel.SearchCriteriaColumn].ToString()));
-                case "3920 Techem":
+                case "Techem":
                     IEnumerable<DataRow> filteredValueTechem = dtCloned.AsEnumerable().Where(x => !x[_factorModel.MaalerColumn].ToString().Contains(_factorModel.SearchCriteria));
                     List<DataRow> outputTechem = new List<DataRow>();
                     foreach (DataRow item in filteredValueTechem.ToList())
                     {
                         item[_factorModel.MaalerColumn] = item[_factorModel.MaalerColumn].ToString().Replace("vandsmåler", "t vand");
                         item[_factorModel.ApartmentColumn] = item[_factorModel.ApartmentColumn].ToString().Substring(0, item[_factorModel.ApartmentColumn].ToString().Length - 1);
+                        //item[_factorModel.ReadDateColumn] = Convert.ToDateTime(_factorModel.ReadDate.ToString()).ToString("dd-MM-yyyy");
                         outputTechem.Add(item);
                     }
                     return outputTechem;
-                case "4201 Brunata":
+                case "Brunata":
                     IEnumerable<DataRow> filteredValueBrunata = dtCloned.AsEnumerable().Where(x => Regex.Match(x[_factorModel.SearchCriteriaColumn].ToString().ToUpper(), _factorModel.SearchCriteria).Success && x[_factorModel.ReadDateColumn].ToString().Equals(_factorModel.ReadDateFormatted));
                     List<DataRow> outputBrunata = new List<DataRow>();
                     foreach (DataRow item in filteredValueBrunata.ToList())
                     {
-                        item[_factorModel.ReadDateColumn] = _factorModel.ReadDate;
+                        item[_factorModel.ReadDateColumn] = Convert.ToDateTime(_factorModel.ReadDate.ToString()).ToString("dd-MM-yyyy");
                         outputBrunata.Add(item);
                     }
                     return outputBrunata;
@@ -307,10 +318,10 @@ namespace KABService.Helper
 
             switch (_company)
             {
-                case "1008 Casi":
+                case "Casi":
                     return dtCloned.AsEnumerable().Where(x => x[_factorModel.ReadColumn].ToString().Contains(_factorModel.SearchCriteria));
-                case "1902 Ista":
-                    IEnumerable<DataRow> filteredValueIsta = dtCloned.AsEnumerable().Where(x => Convert.ToDateTime(x[_factorModel.ReadDateColumn].ToString()).ToString("yyyy-MM-dd").Contains(_factorModel.ReadDate) && !x[_factorModel.MaalerColumn].ToString().ToLower().Contains(_factorModel.MaalerType.ToLower()));
+                case "Ista":
+                    IEnumerable<DataRow> filteredValueIsta = dtCloned.AsEnumerable().Where(x => Convert.ToDateTime(x[_factorModel.ReadDateColumn].ToString()).ToString("dd-MM-yyyy").Contains(Convert.ToDateTime(_factorModel.ReadDate.ToString()).ToString("dd-MM-yyyy")) && (!x[_factorModel.MaalerColumn].ToString().ToLower().Contains(_factorModel.MaalerType.ToLower())) || string.IsNullOrWhiteSpace(x[_factorModel.ReadColumn].ToString()));
                     List<DataRow> outputIsta = new List<DataRow>();
                     foreach (DataRow item in filteredValueIsta.ToList())
                     {
@@ -324,16 +335,16 @@ namespace KABService.Helper
                     }
                     return outputIsta;
                 //return _input.AsEnumerable().Where(x => !x[_factorModel.ReadDateColumn].Equals(_factorModel.SearchCriteria) && !x[_factorModel.MaalerColumn].ToString().Contains(_factorModel.MaalerType));
-                case "3020 Minol":
+                case "Minol":
                     return dtCloned.AsEnumerable().Where(x => string.IsNullOrEmpty(x[_factorModel.ReadColumn].ToString()) || !string.IsNullOrWhiteSpace(x[_factorModel.SearchCriteriaColumn].ToString()));
-                case "3920 Techem":
+                case "Techem":
                     return dtCloned.AsEnumerable().Where(x => x[_factorModel.MaalerColumn].ToString().Contains(_factorModel.SearchCriteria));
-                case "4201 Brunata":
+                case "Brunata":
                     IEnumerable<DataRow> filteredValueBrunata = dtCloned.AsEnumerable().Where(x => !Regex.Match(x[_factorModel.SearchCriteriaColumn].ToString().ToUpper(), _factorModel.SearchCriteria).Success);
                     List<DataRow> outputBrunata = new List<DataRow>();
                     foreach (DataRow item in filteredValueBrunata.ToList())
                     {
-                        item[_factorModel.ReadDateColumn] = _factorModel.ReadDate;
+                        item[_factorModel.ReadDateColumn] = Convert.ToDateTime(_factorModel.ReadDate.ToString()).ToString("dd-MM-yyyy");
                         outputBrunata.Add(item);
                     }
                     return outputBrunata;
