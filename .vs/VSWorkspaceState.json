@@ -2,8 +2,9 @@
   "ExpandedNodes": [
     "",
     "\\KABService",
+    "\\KABService\\Helper",
     "\\KABService\\Object"
   ],
-  "SelectedNode": "\\KABService\\Object\\BDOEnum.cs",
+  "SelectedNode": "\\KABService\\Helper\\BusinessLogic.cs",
   "PreviewInSolutionExplorer": false
 }
