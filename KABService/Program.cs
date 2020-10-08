@@ -25,6 +25,6 @@ namespace KABService
                             config.LogName = "KAB Service - Excel Handler";
                             config.SourceName = "KAB Service - Excel Handler Application";
                         });
-                });
+                }).UseWindowsService();
     }
 }
