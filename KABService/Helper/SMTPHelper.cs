@@ -22,7 +22,7 @@ namespace KABService.Helper
                 SmtpClient client = new SmtpClient(host);
                 string fromEmail = _configuration.GetValue<string>("SMTP:From");
                 string displayName = _configuration.GetValue<string>("SMTP:DisplayName");
-                string toEmail = _configuration.GetValue<string>("SMTP:Tos");
+                string toEmail = _configuration.GetValue<string>("SMTP:To");
                 MailAddress from = new MailAddress(fromEmail, displayName, Encoding.UTF8);
                 MailAddress to = new MailAddress(toEmail);
                 MailMessage message = new MailMessage(from, to)
