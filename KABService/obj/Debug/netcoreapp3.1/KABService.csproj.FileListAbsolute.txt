@@ -130,3 +130,4 @@ C:\Users\yli\source\repos\KABService\KABService\obj\Debug\netcoreapp3.1\KABServi
 C:\Users\yli\source\repos\KABService\KABService\obj\Debug\netcoreapp3.1\KABService.dll
 C:\Users\yli\source\repos\KABService\KABService\obj\Debug\netcoreapp3.1\KABService.pdb
 C:\Users\yli\source\repos\KABService\KABService\obj\Debug\netcoreapp3.1\KABService.genruntimeconfig.cache
+C:\Users\yli\source\repos\KABService\KABService\obj\Debug\netcoreapp3.1\KABService.csprojAssemblyReference.cache

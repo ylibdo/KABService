@@ -48,7 +48,7 @@ namespace KABService
                         //unikDataTable = excelHelper.ReadDataAsDataTable("E:\\KAB Services\\MeterService\\UnikData\\UnikData.xlsx", "12.0");
                         try
                         {
-                            unikDataTable = excelHelper.ReadDataAsDataTable("E:\\KAB Services\\MeterService\\UnikData\\UnikData_2019.xlsx", "12.0");
+                            unikDataTable = excelHelper.ReadDataAsDataTable(_configuration.GetValue<string>("Unik:Vendor"), "12.0");
                         }
                         catch(Exception)
                         {
@@ -156,6 +156,10 @@ namespace KABService
                                 directioryHelper.MoveFile(directory, file, BDOEnum.FileMoveOption.Error);
                                 LogHelper.InsertLog(new LogObject(LogType.Information, (file + " has been moved to Error dictory")));
                             }
+
+                            // send notification
+                            SMTPHelper smtpHelper = new SMTPHelper(_configuration);
+                            smtpHelper.SendEmailAsync("email body");
                         }
                     }
                     else

@@ -13,7 +13,7 @@ namespace KABService.Helper
         {
             _configuration = configuration;
         }
-        public bool SendEmailAsync(string _emailBody) // argument must be the SMTP host.
+        public bool SendEmailAsync(string _emailBody)
         {
             bool sendEmailSuccess;
             try
