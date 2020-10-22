@@ -159,7 +159,14 @@ namespace KABService
 
                             // send notification
                             SMTPHelper smtpHelper = new SMTPHelper(_configuration);
-                            smtpHelper.SendEmailAsync("email body");
+                            string emailBody = "Hej ";
+                            emailBody += Environment.NewLine + Environment.NewLine;
+                            emailBody += "Datakværnen har behandlet alle filerne i mappen.";
+                            emailBody += Environment.NewLine + Environment.NewLine;
+                            emailBody += "Dette er en autogenereret mail og kan ikke besvares.";
+                            emailBody += Environment.NewLine + Environment.NewLine;
+                            emailBody += "/Datakværn service";
+                            smtpHelper.SendEmailAsync(emailBody);
                         }
                     }
                     else

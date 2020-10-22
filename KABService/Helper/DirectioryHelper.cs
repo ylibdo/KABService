@@ -62,7 +62,12 @@ namespace KABService.Helper
                 {
                     Directory.CreateDirectory(targetPath);
                 }
-                Directory.Move(_fileName, Path.Combine(targetPath, _fileName.Substring(_workingDirectory.Length + 1)));
+                FileInfo targetFileInfo = new FileInfo(Path.Combine(targetPath, _fileName.Substring(_workingDirectory.Length + 1)));
+                if(targetFileInfo.Exists)
+                {
+                    targetFileInfo = new FileInfo(Path.Combine(targetPath, "copy_" + _fileName.Substring(_workingDirectory.Length + 1)));
+                }
+                Directory.Move(_fileName, targetFileInfo.FullName);
 
                 _logger.LogInformation("File: " + _fileName + " is moved with action " + _fileMoveOption.ToString());
             }

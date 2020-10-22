@@ -44,7 +44,7 @@ namespace KABService
                 
                 //ExcelHelper excelHelper = new ExcelHelper(_logger,_configuration);
                 //excelHelper.Process(excelHelper.Prepare(@"E:\KAB Services\MeterService\1008 Casi\KAB - AKB_Afd - _10 - 08_Karr_8 311219 visninger.xlsx"), @"E:\KAB Services\MeterService\1008 Casi");
-                await Task.Delay(10000, stoppingToken);
+                await Task.Delay(30000, stoppingToken);
             }
         }
 

@@ -22,12 +22,12 @@ namespace KABService.Helper
         {
             string regexPattern = @"\d{4}";
             
-            int unikMaalerColumn = 2;
+            //int unikMaalerColumn = 2;
             int unikMaalerTypeColumn = 4;
             int unikCompanyColumn = 7;
             int unikDepartmentColumn = 8;
-            int unikMaalerCountColumn = 13;
-            int unikDateColumn = 14;
+            //int unikMaalerCountColumn = 13;
+            //int unikDateColumn = 14;
 
             switch (_company)
             {
@@ -46,9 +46,9 @@ namespace KABService.Helper
                     casi.ReductionColumn = -1;
                     casi.RoomColumn = -1;
                     casi.InstallationDateColumn = -1;
-                    casi.CompanyID = Regex.Match(_company, regexPattern).Value.ToString().Substring(0, 2);
-                    casi.DepartmentID = Regex.Match(_company, regexPattern).Value.ToString().Substring(2, 2);
-                    casi.DepartmentID = Convert.ToString(Convert.ToInt32(casi.DepartmentID));
+                    //casi.CompanyID = Regex.Match(_company, regexPattern).Value.ToString().Substring(0, 2);
+                    //casi.DepartmentID = Regex.Match(_company, regexPattern).Value.ToString().Substring(2, 2);
+                    //casi.DepartmentID = Convert.ToString(Convert.ToInt32(casi.DepartmentID));
                     casi.SearchCriteria = "s";
                     casi.CompanyID = "10";
                     casi.DepartmentID = "08";
@@ -123,8 +123,8 @@ namespace KABService.Helper
                     minol.RoomColumn = -1;
                     minol.InstallationDateColumn = -1;
                     minol.SearchCriteriaColumn = 3;
-                    minol.CompanyID = Regex.Match(_company, regexPattern).Value.ToString().Substring(0, 2);
-                    minol.DepartmentID = Regex.Match(_company, regexPattern).Value.ToString().Substring(2, 2);
+                    //minol.CompanyID = Regex.Match(_company, regexPattern).Value.ToString().Substring(0, 2);
+                    //minol.DepartmentID = Regex.Match(_company, regexPattern).Value.ToString().Substring(2, 2);
                     minol.CompanyID = "30";
                     minol.DepartmentID = "20";
                     //minol.CompanyID = _outputDatatable.Rows[0].ItemArray[0].ToString();
@@ -158,10 +158,12 @@ namespace KABService.Helper
                     techem.ReductionColumn = -1;
                     techem.RoomColumn = -1;
                     techem.InstallationDateColumn = -1;
-                    techem.CompanyID = Regex.Match(_company, regexPattern).Value.ToString().Substring(0, 2);
-                    techem.DepartmentID = Regex.Match(_company, regexPattern).Value.ToString().Substring(2, 2);
-                    techem.DepartmentID = Convert.ToString(Convert.ToInt32(techem.DepartmentID));
+                    //techem.CompanyID = Regex.Match(_company, regexPattern).Value.ToString().Substring(0, 2);
+                    //techem.DepartmentID = Regex.Match(_company, regexPattern).Value.ToString().Substring(2, 2);
+                    //techem.DepartmentID = Convert.ToString(Convert.ToInt32(techem.DepartmentID));
                     techem.SearchCriteria = "Energimåler";
+                    techem.CompanyID = "39";
+                    techem.DepartmentID = "20";
 
                     techem.MaalerRow = _unikDatatable.AsEnumerable().FirstOrDefault(x => x[unikCompanyColumn].ToString().Equals(techem.CompanyID) && x[unikDepartmentColumn].ToString().Equals(techem.DepartmentID));
 
