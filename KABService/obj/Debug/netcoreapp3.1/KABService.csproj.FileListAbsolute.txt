@@ -55,7 +55,6 @@ C:\Users\pkg\source\repos\KABService\KABService\bin\Debug\netcoreapp3.1\runtimes
 C:\Users\pkg\source\repos\KABService\KABService\bin\Debug\netcoreapp3.1\runtimes\win\lib\netstandard2.0\System.Security.Cryptography.ProtectedData.dll
 C:\Users\pkg\source\repos\KABService\KABService\bin\Debug\netcoreapp3.1\runtimes\win\lib\netcoreapp2.0\System.Text.Encoding.CodePages.dll
 C:\Users\pkg\source\repos\KABService\KABService\bin\Debug\netcoreapp3.1\runtimes\win\lib\netcoreapp3.0\System.Windows.Extensions.dll
-C:\Users\pkg\source\repos\KABService\KABService\obj\Debug\netcoreapp3.1\KABService.csprojAssemblyReference.cache
 C:\Users\pkg\source\repos\KABService\KABService\obj\Debug\netcoreapp3.1\KABService.AssemblyInfoInputs.cache
 C:\Users\pkg\source\repos\KABService\KABService\obj\Debug\netcoreapp3.1\KABService.AssemblyInfo.cs
 C:\Users\pkg\source\repos\KABService\KABService\obj\Debug\netcoreapp3.1\KABService.csproj.CoreCompileInputs.cache
@@ -131,3 +130,7 @@ C:\Users\yli\source\repos\KABService\KABService\obj\Debug\netcoreapp3.1\KABServi
 C:\Users\yli\source\repos\KABService\KABService\obj\Debug\netcoreapp3.1\KABService.pdb
 C:\Users\yli\source\repos\KABService\KABService\obj\Debug\netcoreapp3.1\KABService.genruntimeconfig.cache
 C:\Users\yli\source\repos\KABService\KABService\obj\Debug\netcoreapp3.1\KABService.csprojAssemblyReference.cache
+C:\Users\pkg\source\repos\KABService\KABService\bin\Debug\netcoreapp3.1\Microsoft.Extensions.Hosting.WindowsServices.dll
+C:\Users\pkg\source\repos\KABService\KABService\bin\Debug\netcoreapp3.1\System.ServiceProcess.ServiceController.dll
+C:\Users\pkg\source\repos\KABService\KABService\bin\Debug\netcoreapp3.1\runtimes\win\lib\netstandard2.0\System.ServiceProcess.ServiceController.dll
+C:\Users\pkg\source\repos\KABService\KABService\obj\Debug\netcoreapp3.1\KABService.csprojAssemblyReference.cache
