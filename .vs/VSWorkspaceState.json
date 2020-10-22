@@ -5,6 +5,6 @@
     "\\KABService\\Helper",
     "\\KABService\\Object"
   ],
-  "SelectedNode": "\\KABService\\appsettings.json",
+  "SelectedNode": "\\KABService\\Helper\\SMTPHelper.cs",
   "PreviewInSolutionExplorer": false
 }
