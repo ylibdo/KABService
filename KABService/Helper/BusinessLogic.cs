@@ -221,8 +221,6 @@ namespace KABService.Helper
                     return brunata;
 
                 default:
-                    LogHelper.InsertLog(new LogObject(LogType.Error, "Vendor/company naming error."));
-
                     return null;
             }
         }

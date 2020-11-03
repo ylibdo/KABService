@@ -18,9 +18,10 @@ namespace UtilityLibrary.Log
             CreatedBy = String.IsNullOrEmpty(_createdBy) ? "System" : _createdBy ;
         }
 
-        public override string ToString()
+        public string ToString(string _identifier)
         {
             string returnObject = String.Concat(
+                "Source: ", _identifier, Environment.NewLine,
                 "Log Type: ", this.Type.ToString(), Environment.NewLine,
                 "Message: ", this.Message, Environment.NewLine,
                 "CreatedBy: ", this.CreatedBy, " ,Timestamp: ", this.CreatedDateTime.ToString()

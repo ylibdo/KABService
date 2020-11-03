@@ -32,10 +32,10 @@ namespace KABService.Object
 
 
         // log
-        public const string LogDirectory = @"E:\KAB Services\MeterService\Log";
+        public const string LogDirectoryName = "Log";
         public const string SubDirectoryNameDateFormat = "yyyyMMdd";
         public const string LogFileNameDateFormat = "yyyyMMddHHmm";
-        public const string LogFileName = "mylogfile_";
+        public const string LogFileName = "KABlogfile_";
 
     }
 }

@@ -29,6 +29,19 @@ namespace KABService.Helper
                 {
                     Body = _emailBody
                 };
+                try
+                {
+                    string ccListString = _configuration.GetValue<string>("SMTP:CC");
+                    string[] ccListArray = ccListString.Split(";");
+                    foreach(string cc in ccListArray)
+                    {
+                        message.CC.Add(new MailAddress(cc.Trim()));
+                    }
+                }
+                catch (Exception)
+                {
+                    // do nothing just ignore cc
+                }
                 message.BodyEncoding = Encoding.UTF8;
                 message.Subject = _configuration.GetValue<string>("SMTP:Subject");
                 message.SubjectEncoding = Encoding.UTF8;

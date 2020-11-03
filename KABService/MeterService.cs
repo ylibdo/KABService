@@ -26,6 +26,7 @@ namespace KABService
         // Every action starts from here.
         public void Run()
         {
+            LogHelper logHelper = new LogHelper(_configuration, "MeterService");
             try
             {
                 // step 1. Get all the files from directories
@@ -34,7 +35,7 @@ namespace KABService
                 // step 2. Read data from files
                 foreach(string directory in workingDirectories)
                 {
-                    LogHelper.InsertLog(new LogObject(LogType.Information, ("Start to process" + directory)));
+                    logHelper.InsertLog(new LogObject(LogType.Information, ("Start to process" + directory)));
                     // step 2.1 Check if the directory is empty
                     if(directioryHelper.HasFile(directory))
                     {
@@ -52,7 +53,7 @@ namespace KABService
                         }
                         catch(Exception)
                         {
-                            LogHelper.InsertLog(new LogObject(LogType.Error, "Reading Unik configuration file failed."));
+                            logHelper.InsertLog(new LogObject(LogType.Error, "Reading Unik configuration file failed."));
                         }
                         foreach (var file in files)
                         {
@@ -67,7 +68,7 @@ namespace KABService
                                 // 3. Get company name based on directory
                                 var company = getCompanyByDirectoryName(directory);
 
-                                LogHelper.InsertLog(new LogObject(LogType.Information, ("Ready to process file: " + fileInfo.FullName)));
+                                logHelper.InsertLog(new LogObject(LogType.Information, ("Ready to process file: " + fileInfo.FullName)));
                                 // 4. Reading from files.
                                 if (fileInfo.Extension == ".csv")
                                 {
@@ -100,7 +101,7 @@ namespace KABService
                                 }
                                 else
                                 {
-                                    LogHelper.InsertLog(new LogObject(LogType.Warning, (fileInfo.Extension+ " file is not supported.")));
+                                    logHelper.InsertLog(new LogObject(LogType.Warning, (fileInfo.Extension+ " file is not supported.")));
                                     throw new FileLoadException("File format is not supported");
                                 }
 
@@ -132,7 +133,7 @@ namespace KABService
                                 else
                                 {
                                     directioryHelper.MoveFile(directory, newFileName, BDOEnum.FileMoveOption.Processed);
-                                    LogHelper.InsertLog(new LogObject(LogType.Information, (newFileName + " has been moved to Processed dictory")));
+                                    logHelper.InsertLog(new LogObject(LogType.Information, (newFileName + " has been moved to Processed dictory")));
                                 }
 
                                 if (String.IsNullOrEmpty(newErrorFileName))
@@ -141,12 +142,12 @@ namespace KABService
                                 }
                                 else
                                 {
-                                    LogHelper.InsertLog(new LogObject(LogType.Information, (newErrorFileName + " has been moved to Manual dictory")));
+                                    logHelper.InsertLog(new LogObject(LogType.Information, (newErrorFileName + " has been moved to Manual dictory")));
                                     directioryHelper.MoveFile(directory, newErrorFileName, BDOEnum.FileMoveOption.Manual);
                                 }
                                 // 7. Move processed file to archive
                                 directioryHelper.MoveFile(directory, file, BDOEnum.FileMoveOption.Archive);
-                                LogHelper.InsertLog(new LogObject(LogType.Information, (file + " has been moved to Archive dictory")));
+                                logHelper.InsertLog(new LogObject(LogType.Information, (file + " has been moved to Archive dictory")));
                             }
                             catch (Exception ex)
                             {
@@ -154,7 +155,7 @@ namespace KABService
                                 _logger.LogError(ex.Message);
                                 // step 4. Move processed file to error
                                 directioryHelper.MoveFile(directory, file, BDOEnum.FileMoveOption.Error);
-                                LogHelper.InsertLog(new LogObject(LogType.Information, (file + " has been moved to Error dictory")));
+                                logHelper.InsertLog(new LogObject(LogType.Information, (file + " has been moved to Error dictory")));
                             }
 
                             // send notification
@@ -172,7 +173,7 @@ namespace KABService
                     else
                     {
                         _logger.LogInformation(directory + " has no file to work on.");
-                        LogHelper.InsertLog(new LogObject(LogType.Information, (directory + " has no file to work on.")));
+                        logHelper.InsertLog(new LogObject(LogType.Information, (directory + " has no file to work on.")));
                     }
                 }
 
@@ -180,6 +181,7 @@ namespace KABService
             catch(Exception ex)
             {
                 _logger.LogError(ex.Message);
+                logHelper.InsertLog(new LogObject(LogType.Information, ex.Message));
             }
         }
 
