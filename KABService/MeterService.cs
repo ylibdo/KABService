@@ -35,7 +35,7 @@ namespace KABService
                 // step 2. Read data from files
                 foreach(string directory in workingDirectories)
                 {
-                    logHelper.InsertLog(new LogObject(LogType.Information, ("Start to process" + directory)));
+                    logHelper.InsertLog(new LogObject(LogType.Information, ("Start to process: " + directory)));
                     // step 2.1 Check if the directory is empty
                     if(directioryHelper.HasFile(directory))
                     {
@@ -181,7 +181,7 @@ namespace KABService
             catch(Exception ex)
             {
                 _logger.LogError(ex.Message);
-                logHelper.InsertLog(new LogObject(LogType.Information, ex.Message));
+                logHelper.InsertLog(new LogObject(LogType.Error, ex.Message));
             }
         }
 

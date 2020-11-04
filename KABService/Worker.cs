@@ -8,6 +8,8 @@ using KABService.Helper;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using UtilityLibrary.Log;
+using static UtilityLibrary.Log.LogObject;
 
 namespace KABService
 {
@@ -24,9 +26,11 @@ namespace KABService
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
+            LogHelper logHelper = new LogHelper(_configuration, "Worker");
             while (!stoppingToken.IsCancellationRequested)
             {
                 _logger.LogInformation("Meter service is running at: {time}", DateTimeOffset.Now);
+                logHelper.InsertLog(new LogObject(LogType.Information, "Meter service is running at: " + DateTimeOffset.Now));
                 MeterService meterService = new MeterService(_logger, _configuration);
                 meterService.Run();
                 int workerRuntimeIntervalByMillesecond = _configuration.GetValue<int>("WorkerRuntimeIntervalByMinute") * 60 * 1000;
@@ -34,7 +38,7 @@ namespace KABService
                 {
                     throw new NullReferenceException("Configuration is missing for WorkerRuntimeIntervalByMinute.");
                 }
-                await Task.Delay(30000, stoppingToken);
+                await Task.Delay(workerRuntimeIntervalByMillesecond, stoppingToken);
             }
         }
 
