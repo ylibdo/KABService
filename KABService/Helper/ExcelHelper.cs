@@ -1,7 +1,5 @@
 ﻿using KABService.Models;
 using KABService.Object;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
 using OfficeOpenXml;
 using System;
 using System.Collections.Generic;
@@ -15,13 +13,9 @@ namespace KABService.Helper
 {
     class ExcelHelper
     {
-        private readonly ILogger<Worker> _logger;
-        private readonly IConfiguration _configuration;
 
-        public ExcelHelper(ILogger<Worker> logger, IConfiguration configuration)
+        public ExcelHelper()
         {
-            _logger = logger;
-            _configuration = configuration;
         }
 
         // Data tranformation for new output

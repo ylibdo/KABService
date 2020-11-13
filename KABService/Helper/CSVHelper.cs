@@ -1,8 +1,6 @@
 ﻿using CsvHelper;
 using KABService.Models;
 using KABService.Object;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -16,13 +14,9 @@ namespace KABService.Helper
 {
     class CSVHelper
     {
-        private readonly ILogger<Worker> _logger;
-        private readonly IConfiguration _configuration;
 
-        public CSVHelper(ILogger<Worker> logger, IConfiguration configuration)
+        public CSVHelper()
         {
-            _logger = logger;
-            _configuration = configuration;
         }
 
         // Data tranformation for new output
@@ -88,8 +82,6 @@ namespace KABService.Helper
                         Bemærkninger = "",
                         Nulstillingsmåler = _factorModel.Nustillingsmaaler
                     };
-                    //string1 = string2 ?? string.Empty
-                    
                     output.Add(model);
                 }
 

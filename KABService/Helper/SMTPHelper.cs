@@ -23,7 +23,7 @@ namespace KABService.Helper
                 string fromEmail = _configuration.GetValue<string>("SMTP:From");
                 string displayName = _configuration.GetValue<string>("SMTP:DisplayName");
                 string toEmail = _configuration.GetValue<string>("SMTP:To");
-                MailAddress from = new MailAddress(fromEmail, displayName, Encoding.UTF8);
+                MailAddress from = new MailAddress(fromEmail, displayName, Encoding.GetEncoding("iso-8859-1"));
                 MailAddress to = new MailAddress(toEmail);
                 MailMessage message = new MailMessage(from, to)
                 {
@@ -42,9 +42,9 @@ namespace KABService.Helper
                 {
                     // do nothing just ignore cc
                 }
-                message.BodyEncoding = Encoding.UTF8;
+                message.BodyEncoding = Encoding.GetEncoding("iso-8859-1");
                 message.Subject = _configuration.GetValue<string>("SMTP:Subject");
-                message.SubjectEncoding = Encoding.UTF8;
+                message.SubjectEncoding = Encoding.GetEncoding("iso-8859-1");
 
                 client.SendAsync(message, "KAB service notification");
 

@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 
 namespace KABService.Helper
 {
@@ -83,7 +84,8 @@ namespace KABService.Helper
         public IEnumerable<string> GetAllWorkingDirectoryFullPath()
         {
             List<string> companyList = new List<string>();
-            var directory = _configuration.GetValue<string>("WorkingDirectory:" + _configuration.GetValue<string>("Environment"));
+            string directory = _configuration.GetValue<string>("WorkingDirectory:" + _configuration.GetValue<string>("Environment"));
+            directory = UtilHelper.ConvertToLatin1(directory);
             var companyString = _configuration.GetValue<string>("Company");
             try
             {

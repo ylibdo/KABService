@@ -41,19 +41,20 @@ namespace KABService
                     {
                         var files = Directory.EnumerateFiles(directory);
                         string excelVersion = string.Empty;
-                        CSVHelper csvHelper = new CSVHelper(_logger, _configuration);
-                        ExcelHelper excelHelper = new ExcelHelper(_logger, _configuration);
+                        CSVHelper csvHelper = new CSVHelper();
+                        ExcelHelper excelHelper = new ExcelHelper();
                         DataTable unikDataTable = new DataTable();
 
                         // 2.2 Read the Unik data
-                        //unikDataTable = excelHelper.ReadDataAsDataTable("E:\\KAB Services\\MeterService\\UnikData\\UnikData.xlsx", "12.0");
                         try
                         {
-                            unikDataTable = excelHelper.ReadDataAsDataTable(_configuration.GetValue<string>("Unik:Vendor"), "12.0");
+                            string unik = _configuration.GetValue<string>("Unik:Vendor");
+                            unik = UtilHelper.ConvertToLatin1(unik);
+                            unikDataTable = excelHelper.ReadDataAsDataTable(unik, "12.0");
                         }
-                        catch(Exception)
+                        catch(Exception ex)
                         {
-                            logHelper.InsertLog(new LogObject(LogType.Error, "Reading Unik configuration file failed."));
+                            logHelper.InsertLog(new LogObject(LogType.Error, "Reading Unik configuration file failed. " + ex.Message));
                         }
                         foreach (var file in files)
                         {

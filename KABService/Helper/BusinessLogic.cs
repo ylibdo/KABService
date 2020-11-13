@@ -1,17 +1,12 @@
 ﻿using KABService.Models;
+using KABService.Object;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using System.Text.RegularExpressions;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
-using System.Linq;
 using System.Globalization;
-using UtilityLibrary.Log;
-using static UtilityLibrary.Log.LogObject;
-using KABService.Object;
+using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace KABService.Helper
 {
