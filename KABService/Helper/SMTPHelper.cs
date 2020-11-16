@@ -2,6 +2,8 @@
 using System;
 using System.Net.Mail;
 using System.Text;
+using UtilityLibrary.Log;
+using static UtilityLibrary.Log.LogObject;
 
 namespace KABService.Helper
 {
@@ -15,6 +17,7 @@ namespace KABService.Helper
         }
         public bool SendEmailAsync(string _emailBody)
         {
+            LogHelper logHelper = new LogHelper(_configuration, "SMTP");
             bool sendEmailSuccess;
             try
             {
@@ -51,9 +54,10 @@ namespace KABService.Helper
                 message.Dispose();
                 sendEmailSuccess = true;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 sendEmailSuccess = false;
+                logHelper.InsertLog(new LogObject(LogType.Error, "Sending SMTP email failed. " + ex.Message));
             }
 
             return sendEmailSuccess;

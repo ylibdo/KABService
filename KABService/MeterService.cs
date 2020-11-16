@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.IO;
+using System.Linq;
 using System.Text.RegularExpressions;
 using UtilityLibrary.Log;
 using static UtilityLibrary.Log.LogObject;
@@ -27,6 +28,7 @@ namespace KABService
         public void Run()
         {
             LogHelper logHelper = new LogHelper(_configuration, "MeterService");
+            var sendEmail = false;
             try
             {
                 // step 1. Get all the files from directories
@@ -122,14 +124,19 @@ namespace KABService
                                 IEnumerable<DataRow> errorData = BusinessLogic.ErrorDataByCompany(outputDataTable, factorModel, company);
 
                                 // 6. Save data to file.
-                                newFileName = csvHelper.SaveDataToFile(filteredData, factorModel, company, directory, ConfigVariables.OutputFileNameSuffix);
-
-                                newErrorFileName = csvHelper.SaveDataToFile(errorData, factorModel, company, directory, ConfigVariables.ErrorFileNameSuffix);
-
+                                if(filteredData.Count() > 0)
+                                {
+                                    newFileName = csvHelper.SaveDataToFile(filteredData, factorModel, company, directory, ConfigVariables.OutputFileNameSuffix);
+                                }
+                                
+                                if(errorData.Count() > 0)
+                                {
+                                    newErrorFileName = csvHelper.SaveDataToFile(errorData, factorModel, company, directory, ConfigVariables.ErrorFileNameSuffix);
+                                }
 
                                 if (String.IsNullOrEmpty(newFileName))
                                 {
-                                    throw new NullReferenceException();
+                                    throw new NullReferenceException("Error for generating new file name.");
                                 }
                                 else
                                 {
@@ -139,7 +146,7 @@ namespace KABService
 
                                 if (String.IsNullOrEmpty(newErrorFileName))
                                 {
-                                    throw new NullReferenceException();
+                                    throw new NullReferenceException("Error for generating new error file name.");
                                 }
                                 else
                                 {
@@ -149,26 +156,17 @@ namespace KABService
                                 // 7. Move processed file to archive
                                 directioryHelper.MoveFile(directory, file, BDOEnum.FileMoveOption.Archive);
                                 logHelper.InsertLog(new LogObject(LogType.Information, (file + " has been moved to Archive dictory")));
+                                sendEmail = true;
                             }
                             catch (Exception ex)
                             {
                                 _logger.LogError("Processing file: " + file + " is failed.");
                                 _logger.LogError(ex.Message);
+                                logHelper.InsertLog(new LogObject(LogType.Error, ex.Message));
                                 // step 4. Move processed file to error
                                 directioryHelper.MoveFile(directory, file, BDOEnum.FileMoveOption.Error);
                                 logHelper.InsertLog(new LogObject(LogType.Information, (file + " has been moved to Error dictory")));
                             }
-
-                            // send notification
-                            SMTPHelper smtpHelper = new SMTPHelper(_configuration);
-                            string emailBody = "Hej ";
-                            emailBody += Environment.NewLine + Environment.NewLine;
-                            emailBody += "Datakværnen har behandlet alle filerne i mappen.";
-                            emailBody += Environment.NewLine + Environment.NewLine;
-                            emailBody += "Dette er en autogenereret mail og kan ikke besvares.";
-                            emailBody += Environment.NewLine + Environment.NewLine;
-                            emailBody += "/Datakværn service";
-                            smtpHelper.SendEmailAsync(emailBody);
                         }
                     }
                     else
@@ -177,7 +175,19 @@ namespace KABService
                         logHelper.InsertLog(new LogObject(LogType.Information, (directory + " has no file to work on.")));
                     }
                 }
-
+                // send notification
+                if(sendEmail)
+                {
+                    SMTPHelper smtpHelper = new SMTPHelper(_configuration);
+                    string emailBody = "Hej ";
+                    emailBody += Environment.NewLine + Environment.NewLine;
+                    emailBody += "Datakværnen har behandlet alle filerne i mappen.";
+                    emailBody += Environment.NewLine + Environment.NewLine;
+                    emailBody += "Dette er en autogenereret mail og kan ikke besvares.";
+                    emailBody += Environment.NewLine + Environment.NewLine;
+                    emailBody += "/Datakværn service";
+                    smtpHelper.SendEmailAsync(emailBody);
+                }
             }
             catch(Exception ex)
             {
