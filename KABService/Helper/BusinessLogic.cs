@@ -207,12 +207,13 @@ namespace KABService.Helper
                         brunata.Nustillingsmaaler = brunata.MaalerRow.ItemArray[3].ToString();
                         brunata.ReadDate = brunata.MaalerRow.ItemArray[5].ToString();
                         brunata.ReadDate = brunata.MaalerRow.ItemArray[14].ToString();
+                        brunata.ReadDateFormatted = DateTime.Parse(brunata.ReadDate).ToString("yyyyMMdd");
                     }
-
-                    //Temp condition - Unik data is 2020 year and csv file is 2019
-                    //brunata.ReadDate = "31-12-2019";
-                    brunata.ReadDateFormatted = DateTime.Parse(brunata.ReadDate).ToString("yyyyMMdd");
-
+                    else
+                    {
+                        throw new Exception("Cannot find måler type + date in Unik");
+                    }
+                    
                     return brunata;
 
                 default:
