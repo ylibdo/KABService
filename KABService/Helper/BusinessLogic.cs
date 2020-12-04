@@ -82,6 +82,7 @@ namespace KABService.Helper
                     ista.DepartmentID = ista.CompanyID.Length >= 4 ? ista.CompanyID.Substring(2, 2) : _outputDatatable.Rows[0].ItemArray[1].ToString();
                     ista.CompanyID = ista.CompanyID.Length >= 4 ? ista.CompanyID.Substring(0, 2) : ista.CompanyID;
                     ista.DepartmentID = Convert.ToString(Convert.ToInt32(ista.DepartmentID));
+                    
 
                     var listTest = BDOEnum.GetMaalerDescription(_outputDatatable.Rows[1].ItemArray[ista.MaalerTypeColumn].ToString());
 
@@ -198,6 +199,7 @@ namespace KABService.Helper
                     brunata.DepartmentID = brunata.CompanyID.Length >= 4 ? brunata.CompanyID.Substring(2, 2) : _outputDatatable.Rows[0].ItemArray[1].ToString();
                     brunata.CompanyID = brunata.CompanyID.Length >= 4 ? brunata.CompanyID.Substring(0, 2) : brunata.CompanyID;
                     brunata.DepartmentID = Convert.ToString(Convert.ToInt32(brunata.DepartmentID));
+                    
 
                     brunata.MaalerRow = _unikDatatable.AsEnumerable().FirstOrDefault(x => x[unikCompanyColumn].ToString().Equals(brunata.CompanyID) && x[unikDepartmentColumn].ToString().Equals(brunata.DepartmentID));
 

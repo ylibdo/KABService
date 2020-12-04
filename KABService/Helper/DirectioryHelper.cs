@@ -66,7 +66,7 @@ namespace KABService.Helper
                 FileInfo targetFileInfo = new FileInfo(Path.Combine(targetPath, _fileName.Substring(_workingDirectory.Length + 1)));
                 if(targetFileInfo.Exists)
                 {
-                    targetFileInfo = new FileInfo(Path.Combine(targetPath, "copy_" + _fileName.Substring(_workingDirectory.Length + 1)));
+                    targetFileInfo = new FileInfo(Path.Combine(targetPath, "copy_" + DateTime.Now.Millisecond + "_" + _fileName.Substring(_workingDirectory.Length + 1)));
                 }
                 Directory.Move(_fileName, targetFileInfo.FullName);
 
