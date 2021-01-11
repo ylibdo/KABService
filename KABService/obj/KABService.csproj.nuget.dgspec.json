@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\pkg\\Source\\Repos\\KABService\\KABService\\KABService.csproj": {}
+    "C:\\Users\\pkg\\source\\repos\\KABService\\KABService\\KABService.csproj": {}
   },
   "projects": {
-    "C:\\Users\\pkg\\Source\\Repos\\KABService\\KABService\\KABService.csproj": {
+    "C:\\Users\\pkg\\source\\repos\\KABService\\KABService\\KABService.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\pkg\\Source\\Repos\\KABService\\KABService\\KABService.csproj",
+        "projectUniqueName": "C:\\Users\\pkg\\source\\repos\\KABService\\KABService\\KABService.csproj",
         "projectName": "KABService",
-        "projectPath": "C:\\Users\\pkg\\Source\\Repos\\KABService\\KABService\\KABService.csproj",
+        "projectPath": "C:\\Users\\pkg\\source\\repos\\KABService\\KABService\\KABService.csproj",
         "packagesPath": "C:\\Users\\pkg\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\pkg\\Source\\Repos\\KABService\\KABService\\obj\\",
+        "outputPath": "C:\\Users\\pkg\\source\\repos\\KABService\\KABService\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\pkg\\AppData\\Roaming\\NuGet\\NuGet.Config",

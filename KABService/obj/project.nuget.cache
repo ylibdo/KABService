@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "S1LRnpKFkLz/TM42wLeMAS8CKI/sjjaSHB6gDsYlagIsqqYY1giRbmBvKfevK4qjPzGKrUdmh+MWmkc5AFtJ4A==",
+  "dgSpecHash": "tgO7DmoVmujC9YGQ89Vcau9pChrJJiVSW8v/6Rhy/RnMpryCYmINSI/rcTnpNv+yIpOXFOsM3NIXOQSDshaF/w==",
   "success": true,
-  "projectFilePath": "C:\\Users\\pkg\\Source\\Repos\\KABService\\KABService\\KABService.csproj",
+  "projectFilePath": "C:\\Users\\pkg\\source\\repos\\KABService\\KABService\\KABService.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\pkg\\.nuget\\packages\\csvhelper\\15.0.5\\csvhelper.15.0.5.nupkg.sha512",
     "C:\\Users\\pkg\\.nuget\\packages\\epplus\\5.2.1\\epplus.5.2.1.nupkg.sha512",

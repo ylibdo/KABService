@@ -58,7 +58,7 @@ namespace KABService.Helper
                         casi.MaalerType = casi.MaalerRow.ItemArray[2].ToString();
                         casi.Nustillingsmaaler = casi.MaalerRow.ItemArray[3].ToString();
                         casi.ReadDate = casi.MaalerRow.ItemArray[5].ToString();
-                        casi.ReadDate = casi.MaalerRow.ItemArray[14].ToString();
+                        //casi.ReadDate = casi.MaalerRow.ItemArray[14].ToString();
                         //casi.ReadDate = "2019-12-31";
                     }
 
@@ -97,7 +97,7 @@ namespace KABService.Helper
                         ista.MaalerType = ista.MaalerRow.ItemArray[2].ToString().Split(" ")[0];
                         ista.Nustillingsmaaler = ista.MaalerRow.ItemArray[3].ToString();
                         ista.ReadDate = ista.MaalerRow.ItemArray[5].ToString();
-                        ista.ReadDate = ista.MaalerRow.ItemArray[14].ToString();
+                        //ista.ReadDate = ista.MaalerRow.ItemArray[14].ToString();
                         //ista.ReadDate = "2019-12-31";
                     }
                                         
@@ -135,7 +135,8 @@ namespace KABService.Helper
                         minol.MaalerType = minol.MaalerRow.ItemArray[2].ToString();
                         minol.Nustillingsmaaler = minol.MaalerRow.ItemArray[3].ToString();
                         minol.ReadDate = minol.MaalerRow.ItemArray[5].ToString();
-                        minol.ReadDate = Convert.ToDateTime(minol.MaalerRow.ItemArray[14].ToString()).ToString("dd-MM-yyyy");
+                        minol.ReadDate = Convert.ToDateTime(minol.MaalerRow.ItemArray[5].ToString()).ToString("dd-MM-yyyy");
+                        //minol.ReadDate = Convert.ToDateTime(minol.MaalerRow.ItemArray[14].ToString()).ToString("dd-MM-yyyy");
                     }
 
                     return minol;
@@ -168,7 +169,8 @@ namespace KABService.Helper
                         techem.MaalerType = techem.MaalerRow.ItemArray[2].ToString();
                         techem.Nustillingsmaaler = techem.MaalerRow.ItemArray[3].ToString();
                         techem.ReadDate = techem.MaalerRow.ItemArray[5].ToString();
-                        techem.ReadDate = Convert.ToDateTime(techem.MaalerRow.ItemArray[14].ToString()).ToString("dd-MM-yyyy");
+                        techem.ReadDate = Convert.ToDateTime(techem.MaalerRow.ItemArray[5].ToString()).ToString("dd-MM-yyyy");
+                        //techem.ReadDate = Convert.ToDateTime(techem.MaalerRow.ItemArray[14].ToString()).ToString("dd-MM-yyyy");
                     }
 
                     //Temp value
@@ -208,7 +210,7 @@ namespace KABService.Helper
                         brunata.MaalerType = brunata.MaalerRow.ItemArray[2].ToString();
                         brunata.Nustillingsmaaler = brunata.MaalerRow.ItemArray[3].ToString();
                         brunata.ReadDate = brunata.MaalerRow.ItemArray[5].ToString();
-                        brunata.ReadDate = brunata.MaalerRow.ItemArray[14].ToString();
+                        //brunata.ReadDate = brunata.MaalerRow.ItemArray[14].ToString();
                         brunata.ReadDateFormatted = DateTime.Parse(brunata.ReadDate).ToString("yyyyMMdd");
                     }
                     else
