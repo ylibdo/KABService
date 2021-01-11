@@ -49,7 +49,7 @@ namespace KABService.Helper
                 message.Subject = _configuration.GetValue<string>("SMTP:Subject");
                 message.SubjectEncoding = Encoding.GetEncoding("iso-8859-1");
 
-                client.SendAsync(message, "KAB service notification");
+                client.Send(message);
 
                 message.Dispose();
                 sendEmailSuccess = true;
